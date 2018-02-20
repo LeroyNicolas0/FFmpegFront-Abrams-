@@ -22,4 +22,4 @@ Une interface pour FFmpeg en JAVA.
 - Ajouter des filtres vidéos
 
 ## Diagramme de classe
-![Image du diagramme de classe](https://www.noelshack.com/2018-08-2-1519102483-class-diagram-abrams.jpg)
+![Image du diagramme de classe](https://image.noelshack.com/fichiers/2018/08/2/1519102483-class-diagram-abrams.jpg)
