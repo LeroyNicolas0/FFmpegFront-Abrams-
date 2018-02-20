@@ -21,3 +21,5 @@ Une interface pour FFmpeg en JAVA.
 - Estimer taille de sortie
 - Ajouter des filtres vidéos
 
+## Diagramme de classe
+![Image du digramme de classe](https://www.noelshack.com/2018-08-2-1519102483-class-diagram-abrams.jpg)
