@@ -22,5 +22,9 @@ public enum ACodec {
 	public String get_description() {
 		return this.desc;
 	}
+	
+	public static ACodec[] Get_All() {
+		return new ACodec[] {VORBIS,OPUS,MP3LAME,FLAC,AAC};
+	}
 
 }

@@ -22,5 +22,8 @@ public enum VCodec {
 	public String get_description() {
 		return this.desc;
 	}
+	public static VCodec[] Get_All() {
+		return new VCodec[] {LIBX264,LIBX265,LIBXVID,MPEG2,THEORA};
+	}
 
 }

@@ -23,6 +23,8 @@ public enum Extension {
 	
 	private String ext;
 	private String description;
+	private VCodec[] vcodecs;
+	private ACodec[] acodecs;
 	
 	Extension(String ext, String description, VCodec[] allowed_video_codecs, ACodec[] allowed_Audio_Codecs){
 		this.ext=ext;
@@ -34,5 +36,24 @@ public enum Extension {
 	public String get_description() {
 		return this.description;
 	}
-
+	
+	public VCodec[] get_Vcodecs() {
+		if (this.vcodecs[0]!=VCodec.ALL) {
+			return this.vcodecs;
+		}else return VCodec.Get_All();
+	}
+	public ACodec[] get_Aocodecs() {
+		if (this.acodecs[0]!=ACodec.ALL) {
+			return this.acodecs;
+		}else return ACodec.Get_All();
+	}
+	public Extension[] Get_Audio() {
+		return new Extension[] {MP3,M4A,MKA,OGG,OGA,AAC};
+	}
+	public Extension[] Get_Video() {
+		return new Extension[] {MP4,GP,G2,MKV,OGV,AVI};
+	}
+	public Extension[] Get_Subtitles() {
+		return new Extension[] {MKS,SRT};
+	}
 }
