@@ -21,7 +21,7 @@ public class Main {
 		// TODO Auto-generated method stub
 
 	}
-	
+	// On extrait FFMPEG du jar pour pouvoir l'utiliser.
 	public static void extractFFMPEG(){
 		try {
 			//Console.getConsole().writeInConsole("Begin extraction of the source files...");
@@ -64,5 +64,10 @@ public class Main {
 			//Console.getConsole().writeInConsole(e.getMessage());
 			//Console.getConsole().printEndOfMessage();
 		}
+	}
+	// set a transfromer les timestamp ffmpeg en temps en secondes.
+	public static float stringToTime(String time){
+		String[] timeSplited = time.split(":");
+		return Float.parseFloat(timeSplited[0])*3600 + Float.parseFloat(timeSplited[1])*60 + Float.parseFloat(timeSplited[2]);
 	}
 }
