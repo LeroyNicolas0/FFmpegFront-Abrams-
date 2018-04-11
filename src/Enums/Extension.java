@@ -17,9 +17,9 @@ public enum Extension {
 	AVI("avi", "Audio Video Interleaved",new VCodec[]{VCodec.LIBXVID},new ACodec[] {ACodec.MP3LAME}),
 	//Sous-Titres 
 	MKS("mks","Matroska subtitles",new VCodec[]{VCodec.ALL},new ACodec[] {ACodec.ALL}),
-	SRT("srt","SubRip Subtitles",new VCodec[]{VCodec.ALL},new ACodec[] {ACodec.ALL});
+	SRT("srt","SubRip Subtitles",new VCodec[]{VCodec.ALL},new ACodec[] {ACodec.ALL}),
 	//Autres
-	
+	ORG("org","Original Container",null,null);// utilisé seulement pour les fichiers en entrée.
 	
 	private String ext;
 	private String description;
@@ -36,7 +36,6 @@ public enum Extension {
 	public String get_description() {
 		return this.description;
 	}
-	
 	public VCodec[] get_Vcodecs() {
 		if (this.vcodecs[0]!=VCodec.ALL) {
 			return this.vcodecs;
@@ -46,6 +45,10 @@ public enum Extension {
 		if (this.acodecs[0]!=ACodec.ALL) {
 			return this.acodecs;
 		}else return ACodec.Get_All();
+	}
+	//Sert uniquement pour modifier orig. On saura pas ce qui est compatible avec, mais ffmepg devrait savoir, lui.
+	public void set_ext(String n_ext) {
+		this.ext=n_ext;
 	}
 	public Extension[] Get_Audio() {
 		return new Extension[] {MP3,M4A,MKA,OGG,OGA,AAC};

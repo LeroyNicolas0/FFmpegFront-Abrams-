@@ -1,9 +1,9 @@
 package Enums;
 
 public enum ACodec {
-	VORBIS("libvorbis","Vorbis audio encoding"),
+	VORBIS("vorbis","Vorbis audio encoding"),
 	OPUS("libopus", "Opus audio enconding"),
-	MP3LAME("libmp3lame", "MP3 LAME encoding"),
+	MP3LAME("mp3", "MP3 LAME encoding"),
 	FLAC("flac","Free Audio Lossless Codec"),
 	AAC("aac","Advanced Ausdio Codec"),
 	ALL(null,"Marker for all supported Audio codecs");
