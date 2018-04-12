@@ -1,6 +1,10 @@
 package application;
 import java.io.File;
+<<<<<<< HEAD
 import java.io.IOException;
+=======
+import java.util.List;
+>>>>>>> cfec1cb373b9d0481ab86aa141abe374d0b4f0c4
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,14 +18,32 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 
 public class SampleController {
-	@FXML
+	
 	//Bouton pour choisir le fichier vidéo
-	private Button browse;
 	@FXML
-	private ListView<String> view;
+	private Button browse_video;
+	
+	//Bouton pour choisir le(s) fichier(s) audio
+	@FXML
+	private Button browse_audio;
+	
+	//Bouton pour choisir le(s) sous-titre(s)
+	@FXML
+	private Button browse_subtitle;
+		
+	@FXML
+	private ListView<String> view_video;
+	
+	@FXML
+	private ListView<String> view_audio;
+	
+	@FXML
+	private ListView<String> view_sub;
+	
+	
 	
 	//Méthode pour choisir le fichier vidéo
-	public String ButtonBrowseAction(ActionEvent event) {
+	public String ButtonBrowseVideoAction(ActionEvent event) {
 		FileChooser fc = new FileChooser();
 		fc.getExtensionFilters().addAll(
 					new ExtensionFilter("MP4", "*.mp4"),
@@ -33,7 +55,7 @@ public class SampleController {
 					
 		File video = fc.showOpenDialog(null);
 		if(video != null) {
-			view.getItems().add(video.getAbsolutePath());
+			view_video.getItems().add(video.getAbsolutePath());
 			return video.getAbsolutePath();
 		}
 		else {
@@ -42,6 +64,7 @@ public class SampleController {
 		}		
 	}
 	
+<<<<<<< HEAD
 	public void openSubtitleWindow() {
 		BorderPane secondaryLayout;
 		try {
@@ -57,5 +80,52 @@ public class SampleController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+=======
+	//Méthode pour choisir le(s) fichier(s) audio
+		public List<String> ButtonBrowseAudioAction(ActionEvent event) {
+			FileChooser fc = new FileChooser();
+			fc.getExtensionFilters().addAll(
+						new ExtensionFilter("MP3", "*.mp3"),
+						new ExtensionFilter("M4A", "*.m4a"),
+						new ExtensionFilter("OGG", "*.ogg"),
+						new ExtensionFilter("OGA", "*.oga"),
+						new ExtensionFilter("AAC", "*.aac"));
+								
+			List<File> audio = fc.showOpenMultipleDialog(null);
+			List<String> url = null;
+			if(audio != null) {
+				for(int i = 0; i < audio.size();i++) {
+				view_sub.getItems().add(audio.get(i).getAbsolutePath());
+				//url.add(view_sub.getItems().get(i));
+				}
+				return url;
+			}
+			else {
+				System.out.println("the file is not an audio");
+				return null;
+			}		
+		}
+	
+	//Méthode pour choisir le(s) fichier(s) de sous-titre(s)
+	public List<String> ButtonBrowseSubtitleAction(ActionEvent event) {
+		FileChooser fc = new FileChooser();
+		fc.getExtensionFilters().addAll(
+					new ExtensionFilter("SRT", "*.srt"),
+					new ExtensionFilter("MKS", "*.mks"));
+							
+		List<File> sub = fc.showOpenMultipleDialog(null);
+		List<String> url = null;
+		if(sub != null) {
+			for(int i = 0; i < sub.size();i++) {
+			view_sub.getItems().add(sub.get(i).getAbsolutePath());
+			//url.add(view_sub.getItems().get(i));
+			}
+			return url;
+		}
+		else {
+			System.out.println("the file is not a subtitle");
+			return null;
+		}		
+>>>>>>> cfec1cb373b9d0481ab86aa141abe374d0b4f0c4
 	}
 }
