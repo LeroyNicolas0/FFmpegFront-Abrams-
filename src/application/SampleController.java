@@ -1,10 +1,7 @@
 package application;
 import java.io.File;
-<<<<<<< HEAD
 import java.io.IOException;
-=======
 import java.util.List;
->>>>>>> cfec1cb373b9d0481ab86aa141abe374d0b4f0c4
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -64,7 +61,6 @@ public class SampleController {
 		}		
 	}
 	
-<<<<<<< HEAD
 	public void openSubtitleWindow() {
 		BorderPane secondaryLayout;
 		try {
@@ -80,31 +76,32 @@ public class SampleController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-=======
+	}
+	
 	//Méthode pour choisir le(s) fichier(s) audio
-		public List<String> ButtonBrowseAudioAction(ActionEvent event) {
-			FileChooser fc = new FileChooser();
-			fc.getExtensionFilters().addAll(
-						new ExtensionFilter("MP3", "*.mp3"),
-						new ExtensionFilter("M4A", "*.m4a"),
-						new ExtensionFilter("OGG", "*.ogg"),
-						new ExtensionFilter("OGA", "*.oga"),
-						new ExtensionFilter("AAC", "*.aac"));
-								
-			List<File> audio = fc.showOpenMultipleDialog(null);
-			List<String> url = null;
-			if(audio != null) {
-				for(int i = 0; i < audio.size();i++) {
-				view_sub.getItems().add(audio.get(i).getAbsolutePath());
-				//url.add(view_sub.getItems().get(i));
-				}
-				return url;
+	public List<String> ButtonBrowseAudioAction(ActionEvent event) {
+		FileChooser fc = new FileChooser();
+		fc.getExtensionFilters().addAll(
+					new ExtensionFilter("MP3", "*.mp3"),
+					new ExtensionFilter("M4A", "*.m4a"),
+					new ExtensionFilter("OGG", "*.ogg"),
+					new ExtensionFilter("OGA", "*.oga"),
+					new ExtensionFilter("AAC", "*.aac"));
+							
+		List<File> audio = fc.showOpenMultipleDialog(null);
+		List<String> url = null;
+		if(audio != null) {
+			for(int i = 0; i < audio.size();i++) {
+			view_sub.getItems().add(audio.get(i).getAbsolutePath());
+			//url.add(view_sub.getItems().get(i));
 			}
-			else {
-				System.out.println("the file is not an audio");
-				return null;
-			}		
+			return url;
 		}
+		else {
+			System.out.println("the file is not an audio");
+			return null;
+		}	
+	}
 	
 	//Méthode pour choisir le(s) fichier(s) de sous-titre(s)
 	public List<String> ButtonBrowseSubtitleAction(ActionEvent event) {
@@ -126,6 +123,5 @@ public class SampleController {
 			System.out.println("the file is not a subtitle");
 			return null;
 		}		
->>>>>>> cfec1cb373b9d0481ab86aa141abe374d0b4f0c4
 	}
 }
