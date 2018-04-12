@@ -1,12 +1,17 @@
 package application;
 import java.io.File;
+import java.io.IOException;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
+import javafx.stage.Stage;
 
 public class SampleController {
 	@FXML
@@ -35,5 +40,22 @@ public class SampleController {
 			System.out.println("the file is not a video");
 			return null;
 		}		
+	}
+	
+	public void openSubtitleWindow() {
+		BorderPane secondaryLayout;
+		try {
+			secondaryLayout = FXMLLoader.load(getClass().getResource("CreateSubtitleWindow.fxml"));
+			Scene secondScene = new Scene(secondaryLayout, 600, 300);
+			
+			Stage secondStage = new Stage();
+			secondStage.setTitle("Testu titlu");
+			secondStage.setScene(secondScene);
+			
+			secondStage.show();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

@@ -1,6 +1,7 @@
 package application;
 	
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -16,6 +17,9 @@ public class Main extends Application {
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setScene(scene);
 			primaryStage.show();
+			
+			//Pour fermer toutes les fenêtres
+			primaryStage.setOnCloseRequest(e -> Platform.exit());
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
