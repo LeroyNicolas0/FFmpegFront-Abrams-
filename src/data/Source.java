@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import Enums.*;
-import main.Main;
+import application.Main;
 
 public class Source {
 	public String file_path;//L'url du fichier
