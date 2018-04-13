@@ -7,4 +7,13 @@ public class AudioTrack {
 	public int track_number;/*le numéro de piste:
 												 -Dans le fichier de base si en entrée.
 												 -Dans le fichier cible si en sortie*/
+	public AudioTrack(String file,String name,int n) {
+		this.file=file;
+		this.track_name=name;
+		this.track_number=n;
+	}
+	
+	public String Print() {
+		return new String("Track number:"+ Integer.toString(track_number) +"---" + track_name + "  in "+ file  );
+	}
 }

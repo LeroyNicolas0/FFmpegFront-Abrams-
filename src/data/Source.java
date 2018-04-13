@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.Console;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 import Enums.*;
 import main.Main;
@@ -20,6 +21,7 @@ public class Source {
 	public List<SubtitleTrack> st;//Liste de sous-titres;
 	public ACodec acodec;//Le codec audio
 	public float abitrate;// le bitrate audio ( en kb/s)
+	public int sampling_rate;// Taux d'échantillonage audio
 	
 	public Source(String filepath) {
 		this.file_path=filepath;
@@ -28,6 +30,8 @@ public class Source {
 	
 	public void scanffmpeg(String url) {
 		Main.buildFile("ffmpeg -i \""+url+"\" ");
+		pistes_audio=new ArrayList<AudioTrack>();
+		st=new ArrayList<SubtitleTrack>();
 		
 		try {
 			ProcessBuilder procBuilder = new ProcessBuilder(Main.pathTempDirectory+Main.fileCommand);
@@ -38,6 +42,8 @@ public class Source {
 			BufferedReader infoBuff = new BufferedReader(new InputStreamReader(proc.getInputStream()));
 			String lineToParse = null;
 			float fps = 0;
+			int a=0;
+			int s=0;
 			while ((lineToParse = infoBuff.readLine()) != null){
 
 				/* We look for a line that looks like this :
@@ -76,37 +82,45 @@ public class Source {
 					String cutTheEndOfTheLine = lineToParse.substring(0, lineToParse.indexOf("kb/s"));
 					vbitrate = Float.parseFloat(cutTheEndOfTheLine.substring(cutTheEndOfTheLine.lastIndexOf(',')+1, cutTheEndOfTheLine.lastIndexOf(' ')));
 					System.out.println("String extracted : "+ vbitrate);
-					String cutTheEndOfTheLine2 = cutTheEndOfTheLine.substring(0, cutTheEndOfTheLine.lastIndexOf(" "));
-					System.out.println("String extracted2 : "+ cutTheEndOfTheLine2);
-					resolution= new Resolution(cutTheEndOfTheLine2.substring(cutTheEndOfTheLine.indexOf(' ')));				}
-				
-				/* Here we look for audio Stream, just to see if the video does have one.
-				 * (See in command generation)
-				 */
-		/*		if (lineToParse.contains("Stream") && lineToParse.toLowerCase().contains("audio")){
-					System.out.println("Line parsed : " +lineToParse);
-					System.out.println("Audio stream found in input file.");
-					checked=true;
-					if (i==1){
-					setinputContainsAudio(true);
-					}else {
-						setVideo2_inputContainsAudio(true);
+					String Line = cutTheEndOfTheLine.substring(0, cutTheEndOfTheLine.lastIndexOf("[")-1);
+					System.out.println("String extracted2 : "+ Line);
+					System.out.println("String extracted3 : "+ Line.split(",")[2]);
+					resolution= new Resolution(Line.split(",")[2]);				
 					}
-				} else if (!checked){
-					if (i==1){
-						setinputContainsAudio(false);
-					} else {
-						setVideo2_inputContainsAudio(false);
-					}
-				}
 				
-			}
-			if(!this.inputContainsAudioBoolean()) { System.out.println("No Audio stream was found in input file."); }
-			this.maxFrames = Math.round(duration*fps);
-			//System.out.println("Number of frames to proceed : "+maxFrames);
-			//System.out.println("Duration in seconds : "+duration+" seconds");
-			//Console.getConsole().printEndOfMessage();*/
-
+				/* We look for the following line :
+				 * Stream #0:1(und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 128 kb/s (default)
+				 * And we extract 1,(und), 48000 and 128.
+				 */ 
+				// Theses values will be the last track ones, but that doesn't really matter.
+				if (lineToParse.contains("Stream") && lineToParse.toLowerCase().contains("audio")){
+					System.out.println("Line parsed : "+lineToParse);
+					a++;
+					AudioTrack at=new AudioTrack(url,lineToParse.substring(lineToParse.indexOf("(")+1,lineToParse.indexOf(")")),a);
+					pistes_audio.add(at);
+					System.out.println(pistes_audio.get(pistes_audio.size()-1).Print());
+					String cutTheEndOfTheLine = lineToParse.substring(0, lineToParse.indexOf("kb/s"));
+					abitrate = Float.parseFloat(cutTheEndOfTheLine.substring(cutTheEndOfTheLine.lastIndexOf(',')+1, cutTheEndOfTheLine.lastIndexOf(' ')));
+					System.out.println("String extracted : "+ abitrate);
+					String Line = cutTheEndOfTheLine.substring(cutTheEndOfTheLine.indexOf(",")+2, cutTheEndOfTheLine.indexOf("Hz")-1);
+					System.out.println("String extracted2 : "+ Line);
+					sampling_rate=Integer.parseInt(Line);
+					}
+				if (lineToParse.contains("Stream") && lineToParse.toLowerCase().contains("Subtitle")){
+					System.out.println("Line parsed : "+lineToParse);
+					s++;
+					SubtitleTrack t=new SubtitleTrack(url,lineToParse.substring(lineToParse.indexOf("(")+1,lineToParse.indexOf(")")),s);
+					st.add(t);
+					System.out.println(pistes_audio.get(pistes_audio.size()-1).Print());
+					String cutTheEndOfTheLine = lineToParse.substring(0, lineToParse.indexOf("kb/s"));
+					abitrate = Float.parseFloat(cutTheEndOfTheLine.substring(cutTheEndOfTheLine.lastIndexOf(',')+1, cutTheEndOfTheLine.lastIndexOf(' ')));
+					System.out.println("String extracted : "+ abitrate);
+					String Line = cutTheEndOfTheLine.substring(cutTheEndOfTheLine.indexOf(",")+2, cutTheEndOfTheLine.indexOf("Hz")-1);
+					System.out.println("String extracted2 : "+ Line);
+					sampling_rate=Integer.parseInt(Line);
+					}
+				vcodec=null;
+				acodec=null;
 		}
 		} catch (IOException e) {
 			//System.out.println("Error while updating frames (IO Exception) :");
