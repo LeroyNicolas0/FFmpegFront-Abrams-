@@ -9,6 +9,7 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 import java.util.zip.Adler32;
 import java.util.zip.CheckedInputStream;
+import data.*;
 
 public class Main {
 	public static final String fileCommand ="command.bat";
@@ -18,8 +19,8 @@ public class Main {
 	static boolean isEncoding = false;
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+		extractFFMPEG();
+		Source src= new Source("D:\\truecodage\\FFAbrams\\FFmpegFront-Abrams-\\lib\\Physics.mp4");
 	}
 	// On extrait FFMPEG du jar pour pouvoir l'utiliser.
 	public static void extractFFMPEG(){
@@ -39,7 +40,7 @@ public class Main {
 				if(currentJarEntry.getName().equals(fileFFMpeg)){
 					System.out.println("Extraction of : "+currentJarEntry.getName());
 					File fileToCreate = new File(pathTempDirectory+currentJarEntry.getName());
-
+					System.out.println("Extracting "+currentJarEntry.getName()+"...in" + pathTempDirectory);
 					int negativeIfEOFReached;
 					byte dataToTransfer[] = new byte[bufferSize];
 

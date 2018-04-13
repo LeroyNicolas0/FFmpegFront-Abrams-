@@ -45,30 +45,45 @@ public class Source {
 				 * 
 				 */				
 				if (lineToParse.contains("Input #0")){
-					String extractedLine = lineToParse.substring(lineToParse.indexOf("from \'"), lineToParse.indexOf("\'"));
-					name=extractedLine;
-					extension=Extension.ORG;
-					Extension.ORG.set_ext(name.substring(name.indexOf(".")));//On set l'extension a l'original.
+					String extractedLine = lineToParse.substring(lineToParse.indexOf("from \'")+6, lineToParse.indexOf("\':"));
 					System.out.println("Line parsed : "+lineToParse);
 					System.out.println("Strings extracted : "+extractedLine);
+					
+					name=extractedLine;
+					extension=Extension.ORG;
+					Extension.ORG.set_ext(name.substring(name.indexOf(".")+1));//On set l'extension a l'original.
+					System.out.println("Extension:"+ extension.get_ext());
+				}
+				/* We look for a line that looks like this :
+				 *   Duration: 00:00:11.02, start: 0.000000, bitrate: 9570 kb/s
+			     *	 And we extract :  00:00:11:02
+				 * 
+				 */		
+				if (lineToParse.contains("Duration")){
+					System.out.println("Line parsed : "+lineToParse);
+					String extractedLine = lineToParse.substring(lineToParse.indexOf("Duration: ")+9, lineToParse.indexOf(","));
+					System.out.println("Strings extracted : "+extractedLine);
+					duration=Main.stringToTime(extractedLine);
 				}
 
 				/* Here we look for the following line :
 				 * Stream #0:0(eng): Video: h264 (High) (avc1 / 0x31637661), yuvj420p(pc), 1920x1080, 1319 kb/s, 23.98 fps, 23.98 tbr, 24k tbn, 47.95 tbc (default)
-				 * And we extract : 23.98
+				 * And we extract :  1319
+				 * then 1920x1080.
 				 */
 				if (lineToParse.contains("Stream") && lineToParse.toLowerCase().contains("video")){
 					System.out.println("Line parsed : "+lineToParse);
-					String cutTheEndOfTheLine = lineToParse.substring(0, lineToParse.indexOf("fps"));
-					fps = Float.parseFloat(cutTheEndOfTheLine.substring(cutTheEndOfTheLine.lastIndexOf(',')+1, cutTheEndOfTheLine.length()));
-					System.out.println("String extracted : "+fps);
-					this.setFps(fps);
-				}
+					String cutTheEndOfTheLine = lineToParse.substring(0, lineToParse.indexOf("kb/s"));
+					vbitrate = Float.parseFloat(cutTheEndOfTheLine.substring(cutTheEndOfTheLine.lastIndexOf(',')+1, cutTheEndOfTheLine.lastIndexOf(' ')));
+					System.out.println("String extracted : "+ vbitrate);
+					String cutTheEndOfTheLine2 = cutTheEndOfTheLine.substring(0, cutTheEndOfTheLine.lastIndexOf(" "));
+					System.out.println("String extracted2 : "+ cutTheEndOfTheLine2);
+					resolution= new Resolution(cutTheEndOfTheLine2.substring(cutTheEndOfTheLine.indexOf(' ')));				}
 				
 				/* Here we look for audio Stream, just to see if the video does have one.
 				 * (See in command generation)
 				 */
-				if (lineToParse.contains("Stream") && lineToParse.toLowerCase().contains("audio")){
+		/*		if (lineToParse.contains("Stream") && lineToParse.toLowerCase().contains("audio")){
 					System.out.println("Line parsed : " +lineToParse);
 					System.out.println("Audio stream found in input file.");
 					checked=true;
@@ -90,8 +105,9 @@ public class Source {
 			this.maxFrames = Math.round(duration*fps);
 			//System.out.println("Number of frames to proceed : "+maxFrames);
 			//System.out.println("Duration in seconds : "+duration+" seconds");
-			//Console.getConsole().printEndOfMessage();
+			//Console.getConsole().printEndOfMessage();*/
 
+		}
 		} catch (IOException e) {
 			//System.out.println("Error while updating frames (IO Exception) :");
 			//System.out.println(e.getMessage());
@@ -101,4 +117,4 @@ public class Source {
 	}
 	}
 	
-}
+

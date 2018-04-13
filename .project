@@ -14,4 +14,10 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<variableList>
+		<variable>
+			<name>FFMPEG_PATH</name>
+			<value>file:/D:/truecodage/FFAbrams/FFmpegFront-Abrams-/lib/ffmpeg.exe</value>
+		</variable>
+	</variableList>
 </projectDescription>
