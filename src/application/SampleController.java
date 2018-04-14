@@ -103,6 +103,7 @@ public class SampleController implements Initializable{
 			float time=source.duration;
 			label_to.setText(Main.timeToString(time));
 			label_from.setText(Main.timeToString(0f));
+			destination=new Destination(source);
 			destination.end_cut=source.duration;
 		}
 		else {
