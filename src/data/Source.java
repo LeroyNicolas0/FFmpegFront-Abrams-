@@ -114,6 +114,7 @@ public class Source {
 					a++;
 					n++;
 					AudioTrack at=new AudioTrack(url,lineToParse.substring(lineToParse.indexOf("(")+1,lineToParse.indexOf(")")),a,n);
+					at.integrated=true;
 					pistes_audio.add(at);
 					System.out.println(pistes_audio.get(pistes_audio.size()-1).Print());
 					String cutTheEndOfTheLine = lineToParse.substring(0, lineToParse.indexOf("kb/s"));
@@ -128,6 +129,7 @@ public class Source {
 					s++;
 					n++;
 					SubtitleTrack t=new SubtitleTrack(url,lineToParse.substring(lineToParse.indexOf("(")+1,lineToParse.indexOf(")")),s,n);
+					t.integrated=true;
 					st.add(t);
 					}
 		}
