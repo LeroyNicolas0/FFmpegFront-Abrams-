@@ -159,8 +159,8 @@ public class SampleController implements Initializable{
 		}		
 	}
 	
-	public void initialize() 
-	{
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
 		box_extension.setValue("");
 		box_video.setValue("");
 		box_extension.setItems(video_extension_list);
