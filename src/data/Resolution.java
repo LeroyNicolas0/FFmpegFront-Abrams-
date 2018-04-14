@@ -9,8 +9,8 @@ public class Resolution {
 		this.height=h;
 	}
 	public Resolution(String toParse) {
-		int w=Integer.parseInt(toParse.substring(1, toParse.indexOf('x')));
-		int h=Integer.parseInt(toParse.substring(toParse.indexOf('x')+1, toParse.length()));
+		int w=Integer.parseInt(toParse.substring(0, toParse.indexOf('x')));
+		int h=Integer.parseInt(toParse.substring(toParse.indexOf('x')+1, toParse.length()-1));
 		this.width=w;
 		this.height=h;
 	}
