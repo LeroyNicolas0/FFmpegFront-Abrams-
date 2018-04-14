@@ -6,6 +6,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import Enums.*;
 import application.Main;
 
@@ -20,6 +23,19 @@ public class Source {
 	public List<SubtitleTrack> st;//Liste de sous-titres;
 	public float abitrate;// le bitrate audio ( en kb/s)
 	public int sampling_rate;// Taux d'échantillonage audio
+	
+	public Source (Source src) {
+		this.file_path=src.file_path;
+		this.name=src.name;
+		this.duration=src.duration;
+		this.vbitrate=src.vbitrate;
+		this.extension=null;
+		this.pistes_audio=new ArrayList<AudioTrack>(src.pistes_audio);
+		this.resolution=src.resolution;
+		this.st=new ArrayList<SubtitleTrack>(src.st);
+		this.abitrate=src.abitrate;
+		this.sampling_rate=src.sampling_rate;
+	}
 	
 	
 	public Source(String filepath) {
@@ -43,6 +59,7 @@ public class Source {
 			float fps = 0;
 			int a=0;
 			int s=0;
+			int n=0;
 			while ((lineToParse = infoBuff.readLine()) != null){
 
 				/* We look for a line that looks like this :
@@ -72,18 +89,19 @@ public class Source {
 				}
 				/* Here we look for the following line :
 				 * Stream #0:0(eng): Video: h264 (High) (avc1 / 0x31637661), yuvj420p(pc), 1920x1080, 1319 kb/s, 23.98 fps, 23.98 tbr, 24k tbn, 47.95 tbc (default)
-				 * And we extract :  1319
-				 * then 1920x1080.
+				 * And we extract : 1920x1080.
 				 */
 				if (lineToParse.contains("Stream") && lineToParse.toLowerCase().contains("video")){
 					System.out.println("Line parsed : "+lineToParse);
 					String cutTheEndOfTheLine = lineToParse.substring(0, lineToParse.indexOf("kb/s"));
-					vbitrate = Float.parseFloat(cutTheEndOfTheLine.substring(cutTheEndOfTheLine.lastIndexOf(',')+1, cutTheEndOfTheLine.lastIndexOf(' ')));
-					System.out.println("String extracted : "+ vbitrate);
-					String Line = cutTheEndOfTheLine.substring(0, cutTheEndOfTheLine.lastIndexOf("[")-1);
-					System.out.println("String extracted2 : "+ Line);
-					System.out.println("String extracted3 : "+ Line.split(",")[2]);
-					resolution= new Resolution(Line.split(",")[2]);				
+					Pattern pattern = Pattern.compile("[0-9]+x[0-9]+\\s");
+					Matcher matcher = pattern.matcher(cutTheEndOfTheLine);
+					if (matcher.find())
+					{
+					    resolution = new Resolution(matcher.group(0));
+					    System.out.println(resolution.print());
+					}
+					
 					}
 				
 				/* We look for the following line :
@@ -94,7 +112,9 @@ public class Source {
 				if (lineToParse.contains("Stream") && lineToParse.toLowerCase().contains("audio")){
 					System.out.println("Line parsed : "+lineToParse);
 					a++;
-					AudioTrack at=new AudioTrack(url,lineToParse.substring(lineToParse.indexOf("(")+1,lineToParse.indexOf(")")),a);
+					n++;
+					AudioTrack at=new AudioTrack(url,lineToParse.substring(lineToParse.indexOf("(")+1,lineToParse.indexOf(")")),a,n);
+					at.integrated=true;
 					pistes_audio.add(at);
 					System.out.println(pistes_audio.get(pistes_audio.size()-1).Print());
 					String cutTheEndOfTheLine = lineToParse.substring(0, lineToParse.indexOf("kb/s"));
@@ -107,15 +127,10 @@ public class Source {
 				if (lineToParse.contains("Stream") && lineToParse.toLowerCase().contains("Subtitle")){
 					System.out.println("Line parsed : "+lineToParse);
 					s++;
-					SubtitleTrack t=new SubtitleTrack(url,lineToParse.substring(lineToParse.indexOf("(")+1,lineToParse.indexOf(")")),s);
+					n++;
+					SubtitleTrack t=new SubtitleTrack(url,lineToParse.substring(lineToParse.indexOf("(")+1,lineToParse.indexOf(")")),s,n);
+					t.integrated=true;
 					st.add(t);
-					System.out.println(pistes_audio.get(pistes_audio.size()-1).Print());
-					String cutTheEndOfTheLine = lineToParse.substring(0, lineToParse.indexOf("kb/s"));
-					abitrate = Float.parseFloat(cutTheEndOfTheLine.substring(cutTheEndOfTheLine.lastIndexOf(',')+1, cutTheEndOfTheLine.lastIndexOf(' ')));
-					System.out.println("String extracted : "+ abitrate);
-					String Line = cutTheEndOfTheLine.substring(cutTheEndOfTheLine.indexOf(",")+2, cutTheEndOfTheLine.indexOf("Hz")-1);
-					System.out.println("String extracted2 : "+ Line);
-					sampling_rate=Integer.parseInt(Line);
 					}
 		}
 		} catch (IOException e) {

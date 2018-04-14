@@ -9,8 +9,8 @@ public class Resolution {
 		this.height=h;
 	}
 	public Resolution(String toParse) {
-		int w=Integer.parseInt(toParse.substring(1, toParse.indexOf('x')));
-		int h=Integer.parseInt(toParse.substring(toParse.indexOf('x')+1, toParse.length()));
+		int w=Integer.parseInt(toParse.substring(0, toParse.indexOf('x')));
+		int h=Integer.parseInt(toParse.substring(toParse.indexOf('x')+1, toParse.length()-1));
 		this.width=w;
 		this.height=h;
 	}
@@ -34,6 +34,30 @@ public class Resolution {
 		if (1.777<(float)width/(float)height && (float)width/(float)height <1.78) {
 			return true;
 		}else return false;
+	}
+	public Resolution get_360p_ratio() {
+		float ratio=(float)width/(float)height;
+		int h =360;
+		int w =(int)((float)ratio*360);
+		return new Resolution(w,h);
+	}
+	public Resolution get_480p_ratio() {
+		float ratio=(float)width/(float)height;
+		int h =480;
+		int w =(int)((float)ratio*480);
+		return new Resolution(w,h);
+	}
+	public Resolution get_720p_ratio() {
+		float ratio=(float)width/(float)height;
+		int h =720;
+		int w =(int)((float)ratio*720);
+		return new Resolution(w,h);
+	}
+	public Resolution get_1080p_ratio() {
+		float ratio=(float)width/(float)height;
+		int h =1080;
+		int w =(int)((float)ratio*1080);
+		return new Resolution(w,h);
 	}
 }
 
