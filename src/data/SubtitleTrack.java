@@ -7,6 +7,7 @@ public class SubtitleTrack {
 												 -Dans le fichier de base si en entrée.
 												 -Dans le fichier cible si en sortie*/
 	public int stream_number;
+	public boolean integrated;
 	public SubtitleTrack(String file,String name,int n,int n2) {
 		this.file=file;
 		this.track_name=name;

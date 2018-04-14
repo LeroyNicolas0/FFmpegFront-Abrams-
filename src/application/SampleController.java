@@ -1,7 +1,9 @@
 package application;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import data.Source;
 import javafx.beans.value.ChangeListener;
@@ -11,17 +13,21 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Slider;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 import jdk.nashorn.internal.runtime.options.Options;
 
-public class SampleController {
+public class SampleController implements Initializable{
 	
 	ObservableList<String> video_extension_list = FXCollections
 				.observableArrayList("MP4", "GP", "G2", "MKV", "AVI");
@@ -30,7 +36,7 @@ public class SampleController {
 	ObservableList<String> video_codec_list = FXCollections
 			.observableArrayList();
 	
-	//Bouton pour choisir le fichier vidéo
+	//Bouton pour choisir le fichier vidï¿½o
 	@FXML
 	private Button browse_video;
 	
@@ -46,7 +52,7 @@ public class SampleController {
 	@FXML
 	private ChoiceBox box_audio;
 		
-	//Choix du codec vidéo;
+	//Choix du codec vidï¿½o;
 	@FXML
 	private ChoiceBox box_video;
 	
@@ -54,6 +60,18 @@ public class SampleController {
 	//Bouton pour choisir le(s) sous-titre(s)
 	@FXML
 	private Button browse_subtitle;
+	
+	//Slider pour le temps de dï¿½but (From)
+	@FXML
+    private Slider slider_from;
+	@FXML
+    private Label label_from;
+	
+	//Slider pour le temps de fin (To)
+	@FXML
+    private Slider slider_to;	
+	@FXML
+    private Label label_to;
 		
 	@FXML
 	private ListView<String> view_video;
@@ -64,9 +82,10 @@ public class SampleController {
 	@FXML
 	private ListView<String> view_sub;
 	
+	private Source source;
+	//private  Destination destination;
 	
-	
-	//Méthode pour choisir le fichier vidéo
+	//Mï¿½thode pour choisir le fichier vidï¿½o
 	public void ButtonBrowseVideoAction(ActionEvent event) {
 		FileChooser fc = new FileChooser();
 		fc.getExtensionFilters().addAll(
@@ -75,7 +94,10 @@ public class SampleController {
 		File video = fc.showOpenDialog(null);
 		if(video != null) {
 			view_video.getItems().add(video.getAbsolutePath());
-			Source source = new Source(video.getAbsolutePath());		
+			source = new Source(video.getAbsolutePath());
+			float time=source.duration;
+			label_to.setText(Main.timeToString(time));
+			label_from.setText(Main.timeToString(0f));
 		}
 		else {
 			System.out.println("the file is not a video");
@@ -86,7 +108,7 @@ public class SampleController {
 		BorderPane secondaryLayout;
 		try {
 			secondaryLayout = FXMLLoader.load(getClass().getResource("CreateSubtitleWindow.fxml"));
-			Scene secondScene = new Scene(secondaryLayout, 600, 300);
+			Scene secondScene = new Scene(secondaryLayout, 900, 350);
 			
 			Stage secondStage = new Stage();
 			secondStage.setTitle("Testu titlu");
@@ -99,7 +121,7 @@ public class SampleController {
 		}
 	}
 	
-	//Méthode pour choisir le(s) fichier(s) audio
+	//Mï¿½thode pour choisir le(s) fichier(s) audio
 	public void ButtonBrowseAudioAction(ActionEvent event) {
 		FileChooser fc = new FileChooser();
 		fc.getExtensionFilters().addAll(
@@ -118,7 +140,7 @@ public class SampleController {
 		}	
 	}
 	
-	//Méthode pour choisir le(s) fichier(s) de sous-titre(s)
+	//Mï¿½thode pour choisir le(s) fichier(s) de sous-titre(s)
 	public void ButtonBrowseSubtitleAction(ActionEvent event) {
 		FileChooser fc = new FileChooser();
 		fc.getExtensionFilters().addAll(

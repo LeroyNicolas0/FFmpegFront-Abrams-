@@ -35,6 +35,30 @@ public class Resolution {
 			return true;
 		}else return false;
 	}
+	public Resolution get_360p_ratio() {
+		float ratio=(float)width/(float)height;
+		int h =360;
+		int w =(int)((float)ratio*360);
+		return new Resolution(w,h);
+	}
+	public Resolution get_480p_ratio() {
+		float ratio=(float)width/(float)height;
+		int h =480;
+		int w =(int)((float)ratio*480);
+		return new Resolution(w,h);
+	}
+	public Resolution get_720p_ratio() {
+		float ratio=(float)width/(float)height;
+		int h =720;
+		int w =(int)((float)ratio*720);
+		return new Resolution(w,h);
+	}
+	public Resolution get_1080p_ratio() {
+		float ratio=(float)width/(float)height;
+		int h =1080;
+		int w =(int)((float)ratio*1080);
+		return new Resolution(w,h);
+	}
 }
 
 
