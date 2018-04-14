@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import data.Destination;
 import data.Source;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -14,10 +15,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
-import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
@@ -36,6 +37,9 @@ public class SampleController implements Initializable{
 	//Bouton pour choisir le(s) sous-titre(s)
 	@FXML
 	private Button browse_subtitle;
+	
+	@FXML
+    private CheckBox checkbox_cut_video;
 	
 	//Slider pour le temps de début (From)
 	@FXML
@@ -59,7 +63,7 @@ public class SampleController implements Initializable{
 	private ListView<String> view_sub;
 	
 	private Source source;
-	//private  Destination destination;
+	private  Destination destination;
 	
 	//Méthode pour choisir le fichier vidéo
 	public void ButtonBrowseVideoAction(ActionEvent event) {
@@ -74,6 +78,7 @@ public class SampleController implements Initializable{
 			float time=source.duration;
 			label_to.setText(Main.timeToString(time));
 			label_from.setText(Main.timeToString(0f));
+			destination.end_cut=source.duration;
 		}
 		else {
 			System.out.println("the file is not a video");
@@ -137,16 +142,20 @@ public class SampleController implements Initializable{
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		//Méthode pour gérer le scroll du From
+		//Methode pour gerer le scroll du From
 		slider_from.valueProperty().addListener(new ChangeListener<Number>() {
 			public void changed(ObservableValue<? extends Number> arg0, Number arg1, Number arg2) {
 				int valueSlider=(int)slider_from.getValue();
 				if(source!=null) {
 					float time=source.duration*valueSlider/100;
+					//Ce if sert à assurer qu'il y ait au moins une seconde de video
 					if(valueSlider==100) {
 						time--;
 					}
 					label_from.setText(Main.timeToString(time));
+					//On garde les donnees de la destination a jour
+					destination.start_cut=time;
+					destination.duration=destination.end_cut-destination.start_cut;
 				}
 				else {
 					label_from.setText(String.valueOf(valueSlider) + "%");
@@ -155,16 +164,19 @@ public class SampleController implements Initializable{
 			}
 		});
 		
-		//Méthode pour gérer le scroll du To
+		//Methode pour gerer le scroll du To
 		slider_to.valueProperty().addListener(new ChangeListener<Number>() {
 			public void changed(ObservableValue<? extends Number> arg0, Number arg1, Number arg2) {
 				int valueSlider=(int)slider_to.getValue();
 				if(source!=null) {
 					float time=source.duration*valueSlider/100;
+					//Ce if sert à assurer qu'il y ait au moins une seconde de video
 					if(valueSlider!=100) {
 						time++;
 					}
 					label_to.setText(Main.timeToString(time));
+					destination.end_cut=time;
+					destination.duration=destination.end_cut-destination.start_cut;
 				}
 				else {
 					label_to.setText(String.valueOf(valueSlider) + "%");
