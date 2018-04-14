@@ -200,5 +200,40 @@ public class SampleController implements Initializable{
 		      }
 
 		    });
+		//Méthode pour gérer le scroll du From
+				slider_from.valueProperty().addListener(new ChangeListener<Number>() {
+					public void changed(ObservableValue<? extends Number> arg0, Number arg1, Number arg2) {
+						int valueSlider=(int)slider_from.getValue();
+						if(source!=null) {
+							float time=source.duration*valueSlider/100;
+							if(valueSlider==100) {
+								time--;
+							}
+							label_from.setText(Main.timeToString(time));
+						}
+						else {
+							label_from.setText(String.valueOf(valueSlider) + "%");
+						}
+						slider_to.setMin(slider_from.getValue());
+					}
+				});
+				
+				//Méthode pour gérer le scroll du To
+				slider_to.valueProperty().addListener(new ChangeListener<Number>() {
+					public void changed(ObservableValue<? extends Number> arg0, Number arg1, Number arg2) {
+						int valueSlider=(int)slider_to.getValue();
+						if(source!=null) {
+							float time=source.duration*valueSlider/100;
+							if(valueSlider!=100) {
+								time++;
+							}
+							label_to.setText(Main.timeToString(time));
+						}
+						else {
+							label_to.setText(String.valueOf(valueSlider) + "%");
+						}
+						slider_from.setMax(slider_to.getValue());
+					}
+		});
 	}
 }
