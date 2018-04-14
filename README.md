@@ -16,10 +16,7 @@ Une interface pour FFmpeg en JAVA.
 - Création de sous-titres (fichier .srt)
 - Couper début/fin
 - Extraire l’audio
-- Changer la vitesse de la vidéo
 - Multi_channel Audio/ST
-- Estimer taille de sortie
-- Ajouter des filtres vidéos
 
 ## Diagramme de classe
 ![Image du diagramme de classe](https://image.noelshack.com/fichiers/2018/08/2/1519102483-class-diagram-abrams.jpg)
