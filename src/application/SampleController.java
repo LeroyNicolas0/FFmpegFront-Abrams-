@@ -2,6 +2,7 @@ package application;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import data.Source;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -40,24 +41,18 @@ public class SampleController {
 	
 	
 	//Méthode pour choisir le fichier vidéo
-	public String ButtonBrowseVideoAction(ActionEvent event) {
+	public void ButtonBrowseVideoAction(ActionEvent event) {
 		FileChooser fc = new FileChooser();
 		fc.getExtensionFilters().addAll(
-					new ExtensionFilter("MP4", "*.mp4"),
-					new ExtensionFilter("GP", "*.3gp"),
-					new ExtensionFilter("G2", "*.3g2"),
-					new ExtensionFilter("MKV", "*.mkv"),
-					new ExtensionFilter("OGV", "*.ogv"),
-					new ExtensionFilter("AVI", "*.avi"));
+					new ExtensionFilter("MP4, 3GP, 3G2, MKV, OGV, AVI", "*.mp4", "*.3gp", "*.3g2", "*.mkv", "*.ogv", "*.avi"));
 					
 		File video = fc.showOpenDialog(null);
 		if(video != null) {
 			view_video.getItems().add(video.getAbsolutePath());
-			return video.getAbsolutePath();
+			Source source = new Source(video.getAbsolutePath());		
 		}
 		else {
 			System.out.println("the file is not a video");
-			return null;
 		}		
 	}
 	
@@ -79,14 +74,10 @@ public class SampleController {
 	}
 	
 	//Méthode pour choisir le(s) fichier(s) audio
-	public List<String> ButtonBrowseAudioAction(ActionEvent event) {
+	public void ButtonBrowseAudioAction(ActionEvent event) {
 		FileChooser fc = new FileChooser();
 		fc.getExtensionFilters().addAll(
-					new ExtensionFilter("MP3", "*.mp3"),
-					new ExtensionFilter("M4A", "*.m4a"),
-					new ExtensionFilter("OGG", "*.ogg"),
-					new ExtensionFilter("OGA", "*.oga"),
-					new ExtensionFilter("AAC", "*.aac"));
+					new ExtensionFilter("MP3, M4A, OGG, OGA, AAC", "*.mp3", "*.m4a", "*.ogg", "*.oga", "*.aac"));
 							
 		List<File> audio = fc.showOpenMultipleDialog(null);
 		List<String> url = null;
@@ -95,20 +86,17 @@ public class SampleController {
 			view_sub.getItems().add(audio.get(i).getAbsolutePath());
 			//url.add(view_sub.getItems().get(i));
 			}
-			return url;
 		}
 		else {
 			System.out.println("the file is not an audio");
-			return null;
 		}	
 	}
 	
 	//Méthode pour choisir le(s) fichier(s) de sous-titre(s)
-	public List<String> ButtonBrowseSubtitleAction(ActionEvent event) {
+	public void ButtonBrowseSubtitleAction(ActionEvent event) {
 		FileChooser fc = new FileChooser();
 		fc.getExtensionFilters().addAll(
-					new ExtensionFilter("SRT", "*.srt"),
-					new ExtensionFilter("MKS", "*.mks"));
+					new ExtensionFilter("SRT, MKS", "*.srt", "*.mks"));
 							
 		List<File> sub = fc.showOpenMultipleDialog(null);
 		List<String> url = null;
@@ -117,11 +105,9 @@ public class SampleController {
 			view_sub.getItems().add(sub.get(i).getAbsolutePath());
 			//url.add(view_sub.getItems().get(i));
 			}
-			return url;
 		}
 		else {
 			System.out.println("the file is not a subtitle");
-			return null;
 		}		
 	}
 }

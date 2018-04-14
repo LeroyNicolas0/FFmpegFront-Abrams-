@@ -13,15 +13,14 @@ public class Source {
 	public String file_path;//L'url du fichier
 	public String name;//Le nom du fichier
 	public float duration;//La durée du fichier, (en s)
-	public VCodec vcodec;//Le Codec vidéo du fichier
 	public float vbitrate;// le bitrate video ( en kb/s)
 	public Extension extension;// L'extension du fichier
 	public List<AudioTrack> pistes_audio;//Les pistes audio.
 	public Resolution resolution;//la résolution de la vidéo.
 	public List<SubtitleTrack> st;//Liste de sous-titres;
-	public ACodec acodec;//Le codec audio
 	public float abitrate;// le bitrate audio ( en kb/s)
 	public int sampling_rate;// Taux d'échantillonage audio
+	
 	
 	public Source(String filepath) {
 		this.file_path=filepath;
@@ -71,7 +70,6 @@ public class Source {
 					System.out.println("Strings extracted : "+extractedLine);
 					duration=Main.stringToTime(extractedLine);
 				}
-
 				/* Here we look for the following line :
 				 * Stream #0:0(eng): Video: h264 (High) (avc1 / 0x31637661), yuvj420p(pc), 1920x1080, 1319 kb/s, 23.98 fps, 23.98 tbr, 24k tbn, 47.95 tbc (default)
 				 * And we extract :  1319
@@ -119,8 +117,6 @@ public class Source {
 					System.out.println("String extracted2 : "+ Line);
 					sampling_rate=Integer.parseInt(Line);
 					}
-				vcodec=null;
-				acodec=null;
 		}
 		} catch (IOException e) {
 			//System.out.println("Error while updating frames (IO Exception) :");

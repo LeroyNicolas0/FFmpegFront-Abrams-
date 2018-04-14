@@ -5,7 +5,7 @@ public enum ACodec {
 	OPUS("libopus", "Opus audio enconding"),
 	MP3LAME("mp3", "MP3 LAME encoding"),
 	FLAC("flac","Free Audio Lossless Codec"),
-	AAC("aac","Advanced Ausdio Codec"),
+	AAC("aac","Advanced Audio Codec"),
 	ALL(null,"Marker for all supported Audio codecs");
 	
 	private String library;
