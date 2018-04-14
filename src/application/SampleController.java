@@ -23,10 +23,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
-import jdk.nashorn.internal.runtime.options.Options;
 
 public class SampleController implements Initializable{
 	
@@ -53,10 +53,15 @@ public class SampleController implements Initializable{
 	@FXML
 	private ChoiceBox<String> box_audio;
 		
-	//Choix du codec vid�o;
+	//Choix du codec video;
 	@FXML
 	private ChoiceBox<String> box_video;
 	
+	//gridpane pour les slider from/to
+	@FXML
+    private GridPane grid_from;
+	@FXML
+    private GridPane grid_to;
 	
 	//Bouton pour choisir le(s) sous-titre(s)
 	@FXML
@@ -66,7 +71,6 @@ public class SampleController implements Initializable{
     private CheckBox checkbox_cut_video;
 	
 	//Slider pour le temps de debut (From)
-
 	@FXML
     private Slider slider_from;
 	@FXML
@@ -90,7 +94,7 @@ public class SampleController implements Initializable{
 	private Source source;
 	private  Destination destination;
 	
-	//M�thode pour choisir le fichier vid�o
+	//Methode pour choisir le fichier video
 	public void ButtonBrowseVideoAction(ActionEvent event) {
 		FileChooser fc = new FileChooser();
 		fc.getExtensionFilters().addAll(
@@ -111,6 +115,7 @@ public class SampleController implements Initializable{
 		}		
 	}
 	
+	//Ouverture de la fenetre ajout de sous-titres
 	public void openSubtitleWindow() {
 		BorderPane secondaryLayout;
 		try {
@@ -160,6 +165,26 @@ public class SampleController implements Initializable{
 		else {
 			System.out.println("the file is not a subtitle");
 		}		
+	}
+	
+	//Methode pour la checkbox cut_the_video
+	public void checkCheckboxCutVideo() {
+		if(checkbox_cut_video.isSelected()) {
+			grid_from.setVisible(true);
+			grid_to.setVisible(true);
+		}
+		else {
+			grid_from.setVisible(false);
+			grid_to.setVisible(false);
+			//on reset les changements
+			if(destination!=null) {
+				destination.start_cut=0f;
+				destination.end_cut=source.duration;
+				destination.duration=source.duration;
+			}
+			slider_from.setValue(0);
+			slider_to.setValue(100);
+		}
 	}
 	
 	@Override
