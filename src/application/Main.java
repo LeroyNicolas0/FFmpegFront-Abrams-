@@ -134,4 +134,19 @@ public class Main extends Application {
 		return Float.parseFloat(timeSplited[0])*3600 + Float.parseFloat(timeSplited[1])*60 + Float.parseFloat(timeSplited[2]);
 	}
 	
+	public static String timeToString(Float time){
+		int timeInt=Math.round(time);
+		int hour=timeInt/3600;
+		timeInt=timeInt-3600*hour;
+		int minute=timeInt/60;
+		timeInt=timeInt-60*minute;
+		int second=timeInt;
+		String timeString="";
+		if(hour!=0) {
+			timeString=String.valueOf(hour) + "h";
+		}
+		timeString+= String.valueOf(minute) + "m" + String.valueOf(second) + "s";
+		return timeString;
+	}
+	
 }

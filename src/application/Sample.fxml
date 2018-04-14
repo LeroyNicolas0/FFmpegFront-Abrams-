@@ -150,8 +150,8 @@
               </rowConstraints>
                <children>
                   <Label text="From :" />
-                  <Label text="Label" GridPane.columnIndex="2" />
-                  <Slider GridPane.columnIndex="1" />
+                  <Label fx:id="label_from" text="0%" GridPane.columnIndex="2" />
+                  <Slider fx:id="slider_from" blockIncrement="1.0" GridPane.columnIndex="1" />
                </children>
             </GridPane>
             <GridPane GridPane.rowIndex="3">
@@ -165,8 +165,8 @@
               </rowConstraints>
                <children>
                   <Label text="To :" />
-                  <Label text="Label" GridPane.columnIndex="2" />
-                  <Slider GridPane.columnIndex="1" />
+                  <Label fx:id="label_to" text="100%" GridPane.columnIndex="2" />
+                  <Slider fx:id="slider_to" value="100.0" GridPane.columnIndex="1" />
                </children>
             </GridPane>
             <GridPane GridPane.rowIndex="10">
