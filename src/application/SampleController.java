@@ -2,6 +2,7 @@ package application;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import data.Source;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -40,7 +41,7 @@ public class SampleController {
 	
 	
 	//Méthode pour choisir le fichier vidéo
-	public String ButtonBrowseVideoAction(ActionEvent event) {
+	public void ButtonBrowseVideoAction(ActionEvent event) {
 		FileChooser fc = new FileChooser();
 		fc.getExtensionFilters().addAll(
 					new ExtensionFilter("MP4", "*.mp4"),
@@ -53,11 +54,11 @@ public class SampleController {
 		File video = fc.showOpenDialog(null);
 		if(video != null) {
 			view_video.getItems().add(video.getAbsolutePath());
-			return video.getAbsolutePath();
+			Source source = new Source(video.getAbsolutePath());
+			
 		}
 		else {
 			System.out.println("the file is not a video");
-			return null;
 		}		
 	}
 	
