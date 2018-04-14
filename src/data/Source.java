@@ -89,14 +89,11 @@ public class Source {
 				}
 				/* Here we look for the following line :
 				 * Stream #0:0(eng): Video: h264 (High) (avc1 / 0x31637661), yuvj420p(pc), 1920x1080, 1319 kb/s, 23.98 fps, 23.98 tbr, 24k tbn, 47.95 tbc (default)
-				 * And we extract :  1319
-				 * then 1920x1080.
+				 * And we extract : 1920x1080.
 				 */
 				if (lineToParse.contains("Stream") && lineToParse.toLowerCase().contains("video")){
 					System.out.println("Line parsed : "+lineToParse);
 					String cutTheEndOfTheLine = lineToParse.substring(0, lineToParse.indexOf("kb/s"));
-					vbitrate = Float.parseFloat(cutTheEndOfTheLine.substring(cutTheEndOfTheLine.lastIndexOf(',')+1, cutTheEndOfTheLine.lastIndexOf(' ')));
-					System.out.println("String extracted : "+ vbitrate);
 					Pattern pattern = Pattern.compile("[0-9]+x[0-9]+\\s");
 					Matcher matcher = pattern.matcher(cutTheEndOfTheLine);
 					if (matcher.find())

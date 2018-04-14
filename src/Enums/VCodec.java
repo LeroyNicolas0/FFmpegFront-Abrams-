@@ -4,7 +4,6 @@ public enum VCodec {
 	LIBX264("h264","x264 H.264/MPEG-4 AVC Codec"),
 	LIBX265("hevc","x265 H.265/HEVC Codec"),
 	LIBXVID("mpeg4","Xvid MPEG-4 Part 2 Codec"),
-	THEORA("theora","Theora Video Codec"),
 	ALL(null,"Marker for all supported Video codecs");
 	
 	private String library;
@@ -22,7 +21,7 @@ public enum VCodec {
 		return this.desc;
 	}
 	public static VCodec[] Get_All() {
-		return new VCodec[] {LIBX264,LIBX265,LIBXVID,THEORA};
+		return new VCodec[] {LIBX264,LIBX265,LIBXVID};
 	}
 
 }
