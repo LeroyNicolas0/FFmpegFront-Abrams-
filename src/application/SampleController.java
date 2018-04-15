@@ -84,6 +84,7 @@ public class SampleController implements Initializable{
 	@FXML
 	private Button browse_subtitle;
 	
+	//choix de cut vidï¿½o
 	@FXML
     private CheckBox checkbox_cut_video;
 	
@@ -149,18 +150,30 @@ public class SampleController implements Initializable{
 			//on met a jour la destination
 			Main.destination=new Destination(Main.source);
 			Main.destination.end_cut=Main.source.duration;
-			//on met a jour le bitrate proposé
+			//on met a jour le bitrate proposï¿½
 			slider_bitrate.setValue(Main.destination.resolution.width*Main.destination.resolution.height*60/10000);
 			text_bitrate.setText(String.valueOf(Main.destination.resolution.width*Main.destination.resolution.height*60/10000));
+			checkbox_cut_video.setDisable(false);
 		}
 		else {
 			System.out.println("the file is not a video");
+			checkbox_cut_video.setDisable(true);
 		}		
 	}
 	
-	//Méthode pour lancer
+	//Mï¿½thode pour lancer
 	public void ButtonLaunch(ActionEvent event) {
-		Main.buildFile(Main.destination.Generate_command(Main.source));
+		Main.buildFile(Main.destination.Generate_command(Main.source)); // crï¿½e le fichier command.bat
+		String PathToFileWrite = Main.pathTempDirectory+Main.fileCommand;
+		if(!Main.isEncoding) {
+			try {
+				Process p =  Runtime.getRuntime().exec("cmd /c command.bat", null, new File(Main.pathTempDirectory));
+			} catch (IOException e) {
+				System.out.println("bug");
+				e.printStackTrace();
+			}
+		}
+		
 	}
 	
 	//Ouverture de la fenetre ajout de sous-titres
@@ -233,12 +246,12 @@ public class SampleController implements Initializable{
 	//Methode pour la checkbox cut_the_video
 	public void checkCheckboxCutVideo() {
 		if(checkbox_cut_video.isSelected()) {
-			grid_from.setDisable(false);
-			grid_to.setDisable(false);
+			grid_from.setVisible(true);
+			grid_to.setVisible(true);
 		}
 		else {
-			grid_from.setDisable(true);
-			grid_to.setDisable(true);
+			grid_from.setVisible(false);
+			grid_to.setVisible(false);
 			//on reset les changements
 			if(Main.destination!=null) {
 				Main.destination.start_cut=0f;
@@ -346,7 +359,7 @@ public class SampleController implements Initializable{
 				int valueSlider=(int)slider_from.getValue();
 				if(Main.source!=null) {
 					float time=Main.source.duration*valueSlider/100;
-					//Ce if sert à assurer qu'il y ait au moins une seconde de video
+					//Ce if sert ï¿½ assurer qu'il y ait au moins une seconde de video
 					if(valueSlider==100) {
 						time--;
 					}
@@ -368,7 +381,7 @@ public class SampleController implements Initializable{
 				int valueSlider=(int)slider_to.getValue();
 				if(Main.source!=null) {
 					float time=Main.source.duration*valueSlider/100;
-					//Ce if sert à assurer qu'il y ait au moins une seconde de video
+					//Ce if sert ï¿½ assurer qu'il y ait au moins une seconde de video
 					if(valueSlider!=100) {
 						time++;
 					}
@@ -433,7 +446,7 @@ public class SampleController implements Initializable{
 		box_video.setValue("");
 		box_extension.setItems(video_extension_list);
 		
-		//Méthode pour choix extension vidéo
+		//Mï¿½thode pour choix extension vidï¿½o
 		box_extension.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
 	      @Override
 	      public void changed(ObservableValue<? extends Number> observableValue, Number old_value, Number new_value) {
@@ -475,7 +488,7 @@ public class SampleController implements Initializable{
 
 	    });
 		
-		//Méthode pour choix codec audio
+		//Mï¿½thode pour choix codec audio
 		box_audio.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
 		      @Override
 		      public void changed(ObservableValue<? extends Number> observableValue, Number old_value, Number new_value) {
@@ -488,7 +501,7 @@ public class SampleController implements Initializable{
 		      }
 		    });
 		
-		//Méthode pour choix codec video
+		//Mï¿½thode pour choix codec video
 		box_video.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
 			@Override
 		      public void changed(ObservableValue<? extends Number> observableValue, Number old_value, Number new_value) {
