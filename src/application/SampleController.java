@@ -4,11 +4,14 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import Enums.ACodec;
 import Enums.Extension;
 import Enums.VCodec;
 import data.Destination;
+import data.Resolution;
 import data.Source;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -132,6 +135,12 @@ public class SampleController implements Initializable{
 	
 	@FXML
 	private Button subtitle_window_button;
+	
+	@FXML
+	private Slider abitrate_slider;
+	
+	@FXML
+	private TextField abitrate_field;
 	
 	//Methode pour choisir le fichier video
 	public void ButtonBrowseVideoAction(ActionEvent event) {
@@ -408,6 +417,17 @@ public class SampleController implements Initializable{
 			}
 		});
 		
+		//Methode pour gérer le scorll du bitrate audio
+		abitrate_slider.valueProperty().addListener(new ChangeListener<Number>(){
+			public void changed(ObservableValue<? extends Number> arg0, Number arg1, Number arg2) {
+				int valueSlider=(int)abitrate_slider.getValue();
+				if(Main.destination!=null) {
+					Main.destination.abitrate=valueSlider;
+				}
+				abitrate_field.setText(String.valueOf(valueSlider)+" kb/s");
+			}
+		});
+		
 		//Methode pour le textField crf
 		text_crf.textProperty().addListener(new ChangeListener<String>() {
 			@Override
@@ -422,8 +442,35 @@ public class SampleController implements Initializable{
 					}
 				}		
 			}
-		});
-		
+		});		
+		//Methode pour le textField bitrate
+
+				ChangeListener<? super Boolean> bitrate_listener=new ChangeListener<Boolean>() {
+			@Override
+			public void changed(ObservableValue<? extends Boolean> arg0, Boolean arg1, Boolean arg2) {
+				if(text_bitrate.getText()!=null ) {
+					Pattern pattern = Pattern.compile("\\d+");
+					Matcher matcher = pattern.matcher(text_bitrate.getText());
+					if (matcher.find()) {
+						int value=Integer.parseInt(matcher.group(0));
+						System.out.println(value);
+						if (value>200000) {
+							value=200000;
+						}
+						else if (value<1) {
+							value=1;
+						}
+						slider_bitrate.setValue(value);
+						text_bitrate.setText(Integer.toString(value)+ " kb/s");
+							if(Main.destination!=null) {
+								Main.destination.vbitrate=value;
+							}
+						}
+					}
+				}		
+			};
+			text_bitrate.focusedProperty().addListener(bitrate_listener);
+			
 		text_name.textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> arg0, String arg1, String arg2) {

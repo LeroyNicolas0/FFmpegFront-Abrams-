@@ -97,7 +97,7 @@ public class Source {
 				 */
 				if (lineToParse.contains("Stream") && lineToParse.toLowerCase().contains("video")) {
 					System.out.println("Line parsed : " + lineToParse);
-					String cutTheEndOfTheLine = lineToParse.substring(0, lineToParse.indexOf("kb/s"));
+					String cutTheEndOfTheLine = lineToParse;
 					Pattern pattern = Pattern.compile("[0-9]+x[0-9]+\\s");
 					Matcher matcher = pattern.matcher(cutTheEndOfTheLine);
 					if (matcher.find()) {
