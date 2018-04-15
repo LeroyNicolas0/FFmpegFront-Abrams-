@@ -58,6 +58,10 @@ public class SampleController implements Initializable{
 	@FXML
 	private Button browse_directory;
 	
+	//Bouton pour lancer
+	@FXML
+	private Button launch;
+	
 	//Choix de l'extension;
 	@FXML
 	private ChoiceBox<String> box_extension;
@@ -158,6 +162,11 @@ public class SampleController implements Initializable{
 		}		
 	}
 	
+	//Méthode pour lancer
+	public void ButtonLaunch(ActionEvent event) {
+		Main.buildFile(destination.Generate_command(source));
+	}
+	
 	//Ouverture de la fenetre ajout de sous-titres
 	public void openSubtitleWindow() {
 		BorderPane secondaryLayout;
@@ -217,7 +226,8 @@ public class SampleController implements Initializable{
 			File dir = dc.showDialog(null);
 			if(dir != null) {
 					text_directory.setText(dir.getAbsolutePath());
-					destination.file_path = dir.getAbsolutePath();
+					System.out.println(text_directory.getText());
+					destination.file_path = text_directory.getText() + "\\" + destination.name;
 			}
 			else {
 				System.out.println("choose a directory");
@@ -476,7 +486,7 @@ public class SampleController implements Initializable{
 		    	  String aud = (String) box_audio.getItems().get((Integer) new_value);
 		    	  System.out.println(box_audio.getItems().get((Integer) new_value));
 		    	  for(ACodec audio : ACodec.values()) {
-		    		if(aud==audio.name());
+		    		if(aud==audio.name())
 		    	  		destination.acodec = audio ;
 		    	  }
 		      }
@@ -489,7 +499,7 @@ public class SampleController implements Initializable{
 		    	  String vid = (String) box_video.getItems().get((Integer) new_value);
 		    	  System.out.println(box_video.getItems().get((Integer) new_value));
 		    	  for(VCodec video : VCodec.values()) {
-		    		if(vid==video.name());
+		    		if(vid==video.name())
 		    			destination.vcodec = video;
 		    	  }
 		      }
