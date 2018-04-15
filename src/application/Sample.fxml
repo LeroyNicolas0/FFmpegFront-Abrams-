@@ -233,7 +233,7 @@
                <children>
                   <Label alignment="CENTER" prefHeight="21.0" prefWidth="138.0" text="Resolution:" />
                   <TextField fx:id="resolution_w" GridPane.columnIndex="1" />
-                  <TextField GridPane.columnIndex="3" />
+                  <TextField fx:id="resolution_h" GridPane.columnIndex="3" />
                   <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="21.0" prefWidth="11.0" text="x" GridPane.columnIndex="2" />
                   <ChoiceBox fx:id="res_list" prefWidth="150.0" GridPane.columnIndex="4" />
                </children>
