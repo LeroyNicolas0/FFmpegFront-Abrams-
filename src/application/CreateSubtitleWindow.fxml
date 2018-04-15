@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="338.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane prefHeight="338.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.SampleController">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
@@ -39,8 +39,8 @@
                         <HBox>
                            <children>
                               <Label text="Subtitle start" />
-                              <Slider />
-                              <Label text="00 m 00 s" />
+                              <Slider fx:id="slider_subtitle" />
+                              <Label fx:id="label_slider_subtitle" text="00 m 00 s" />
                            </children>
                            <VBox.margin>
                               <Insets bottom="10.0" left="5.0" top="10.0" />

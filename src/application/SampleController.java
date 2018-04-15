@@ -129,11 +129,7 @@ public class SampleController implements Initializable{
 	private ListView<String> view_audio;
 	
 	@FXML
-	private ListView<String> view_sub;
-	
-	
-	private Source source;
-	private  Destination destination;
+	private ListView<String> view_sub;	
 	
 	//Methode pour choisir le fichier video
 	public void ButtonBrowseVideoAction(ActionEvent event) {
@@ -145,17 +141,17 @@ public class SampleController implements Initializable{
 		if(video != null) {
 			text_video.setText(video.getAbsolutePath());
 			System.out.println(video.getAbsolutePath());
-			source = new Source(video.getAbsolutePath());
+			Main.source = new Source(video.getAbsolutePath());
 			//on met a jour les labels des sliders From/To
-			float time=source.duration;
+			float time=Main.source.duration;
 			label_to.setText(Main.timeToString(time));
 			label_from.setText(Main.timeToString(0f));
 			//on met a jour la destination
-			destination=new Destination(source);
-			destination.end_cut=source.duration;
+			Main.destination=new Destination(Main.source);
+			Main.destination.end_cut=Main.source.duration;
 			//on met a jour le bitrate proposé
-			slider_bitrate.setValue(destination.resolution.width*destination.resolution.height*60/10000);
-			text_bitrate.setText(String.valueOf(destination.resolution.width*destination.resolution.height*60/10000));
+			slider_bitrate.setValue(Main.destination.resolution.width*Main.destination.resolution.height*60/10000);
+			text_bitrate.setText(String.valueOf(Main.destination.resolution.width*Main.destination.resolution.height*60/10000));
 		}
 		else {
 			System.out.println("the file is not a video");
@@ -164,7 +160,7 @@ public class SampleController implements Initializable{
 	
 	//Méthode pour lancer
 	public void ButtonLaunch(ActionEvent event) {
-		Main.buildFile(destination.Generate_command(source));
+		Main.buildFile(Main.destination.Generate_command(Main.source));
 	}
 	
 	//Ouverture de la fenetre ajout de sous-titres
@@ -227,7 +223,7 @@ public class SampleController implements Initializable{
 			if(dir != null) {
 					text_directory.setText(dir.getAbsolutePath());
 					System.out.println(text_directory.getText());
-					destination.file_path = text_directory.getText() + "\\" + destination.name;
+					Main.destination.file_path = text_directory.getText() + "\\" + Main.destination.name;
 			}
 			else {
 				System.out.println("choose a directory");
@@ -244,10 +240,10 @@ public class SampleController implements Initializable{
 			grid_from.setDisable(true);
 			grid_to.setDisable(true);
 			//on reset les changements
-			if(destination!=null) {
-				destination.start_cut=0f;
-				destination.end_cut=source.duration;
-				destination.duration=source.duration;
+			if(Main.destination!=null) {
+				Main.destination.start_cut=0f;
+				Main.destination.end_cut=Main.source.duration;
+				Main.destination.duration=Main.source.duration;
 			}
 			slider_from.setValue(0);
 			slider_to.setValue(100);
@@ -280,19 +276,19 @@ public class SampleController implements Initializable{
 			slider_bitrate.setDisable(true);
 			text_bitrate.setDisable(true);
 			text_bitrate.setText("");
-			if(destination!=null) {
-				destination.use_crf=true;
-				destination.crf=30f;
+			if(Main.destination!=null) {
+				Main.destination.use_crf=true;
+				Main.destination.crf=30f;
 			}
 		}
 		else {
 			checkbox_bitrate.setSelected(true);
 			slider_bitrate.setDisable(false);
 			text_bitrate.setDisable(false);
-			if(destination!=null) {
-				slider_bitrate.setValue(destination.resolution.width*destination.resolution.height*60/10000);
-				text_bitrate.setText(String.valueOf(destination.resolution.width*destination.resolution.height*60/10000));
-				destination.use_crf=false;
+			if(Main.destination!=null) {
+				slider_bitrate.setValue(Main.destination.resolution.width*Main.destination.resolution.height*60/10000);
+				text_bitrate.setText(String.valueOf(Main.destination.resolution.width*Main.destination.resolution.height*60/10000));
+				Main.destination.use_crf=false;
 			}
 			else {
 				slider_bitrate.setValue(100);
@@ -308,11 +304,11 @@ public class SampleController implements Initializable{
 	//Methode pour la checkbox bitrate
 	public void checkCheckboxBitrate() {
 		if(checkbox_bitrate.isSelected()) {
-			if(destination!=null) {
-				slider_bitrate.setValue(destination.resolution.width*destination.resolution.height*60/10000);
-				text_bitrate.setText(String.valueOf(destination.resolution.width*destination.resolution.height*60/10000));
-				destination.vbitrate=destination.resolution.width*destination.resolution.height*60/10000;
-				destination.use_crf=false;
+			if(Main.destination!=null) {
+				slider_bitrate.setValue(Main.destination.resolution.width*Main.destination.resolution.height*60/10000);
+				text_bitrate.setText(String.valueOf(Main.destination.resolution.width*Main.destination.resolution.height*60/10000));
+				Main.destination.vbitrate=Main.destination.resolution.width*Main.destination.resolution.height*60/10000;
+				Main.destination.use_crf=false;
 			}
 			else {
 				slider_bitrate.setValue(100);
@@ -327,8 +323,8 @@ public class SampleController implements Initializable{
 			text_crf.setText("");
 		}
 		else {
-			if(destination!=null) {
-				destination.use_crf=true;
+			if(Main.destination!=null) {
+				Main.destination.use_crf=true;
 			}
 			checkbox_crf.setSelected(true);
 			slider_crf.setDisable(false);
@@ -348,16 +344,16 @@ public class SampleController implements Initializable{
 		slider_from.valueProperty().addListener(new ChangeListener<Number>() {
 			public void changed(ObservableValue<? extends Number> arg0, Number arg1, Number arg2) {
 				int valueSlider=(int)slider_from.getValue();
-				if(source!=null) {
-					float time=source.duration*valueSlider/100;
+				if(Main.source!=null) {
+					float time=Main.source.duration*valueSlider/100;
 					//Ce if sert à assurer qu'il y ait au moins une seconde de video
 					if(valueSlider==100) {
 						time--;
 					}
 					label_from.setText(Main.timeToString(time));
 					//On garde les donnees de la destination a jour
-					destination.start_cut=time;
-					destination.duration=destination.end_cut-destination.start_cut;
+					Main.destination.start_cut=time;
+					Main.destination.duration=Main.destination.end_cut-Main.destination.start_cut;
 				}
 				else {
 					label_from.setText(String.valueOf(valueSlider) + "%");
@@ -370,15 +366,15 @@ public class SampleController implements Initializable{
 		slider_to.valueProperty().addListener(new ChangeListener<Number>() {
 			public void changed(ObservableValue<? extends Number> arg0, Number arg1, Number arg2) {
 				int valueSlider=(int)slider_to.getValue();
-				if(source!=null) {
-					float time=source.duration*valueSlider/100;
+				if(Main.source!=null) {
+					float time=Main.source.duration*valueSlider/100;
 					//Ce if sert à assurer qu'il y ait au moins une seconde de video
 					if(valueSlider!=100) {
 						time++;
 					}
 					label_to.setText(Main.timeToString(time));
-					destination.end_cut=time;
-					destination.duration=destination.end_cut-destination.start_cut;
+					Main.destination.end_cut=time;
+					Main.destination.duration=Main.destination.end_cut-Main.destination.start_cut;
 				}
 				else {
 					label_to.setText(String.valueOf(valueSlider) + "%");
@@ -391,8 +387,8 @@ public class SampleController implements Initializable{
 		slider_crf.valueProperty().addListener(new ChangeListener<Number>() {
 			public void changed(ObservableValue<? extends Number> arg0, Number arg1, Number arg2) {
 				int valueSlider=(int)slider_crf.getValue();
-				if(destination!=null) {
-					destination.crf=valueSlider;
+				if(Main.destination!=null) {
+					Main.destination.crf=valueSlider;
 				}
 				text_crf.setText(String.valueOf(valueSlider));
 			}
@@ -402,8 +398,8 @@ public class SampleController implements Initializable{
 		slider_bitrate.valueProperty().addListener(new ChangeListener<Number>() {
 			public void changed(ObservableValue<? extends Number> arg0, Number arg1, Number arg2) {
 				int valueSlider=(int)slider_bitrate.getValue();
-				if(destination!=null) {
-					destination.vbitrate=valueSlider;
+				if(Main.destination!=null) {
+					Main.destination.vbitrate=valueSlider;
 				}
 				text_bitrate.setText(String.valueOf(valueSlider));
 			}
@@ -417,8 +413,8 @@ public class SampleController implements Initializable{
 					int value=Integer.parseInt(text_crf.getText());
 					if(value>=0 && value<=51) {
 						slider_crf.setValue(value);
-						if(destination!=null) {
-							destination.crf=value;
+						if(Main.destination!=null) {
+							Main.destination.crf=value;
 						}
 					}
 				}		
@@ -428,8 +424,8 @@ public class SampleController implements Initializable{
 		text_name.textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> arg0, String arg1, String arg2) {
-						destination.name = text_name.getText() + "." + destination.extension.get_ext();
-						System.out.println(destination.name);
+						Main.destination.name = text_name.getText() + "." + Main.destination.extension.get_ext();
+						System.out.println(Main.destination.name);
 				}		
 		});
 		
@@ -450,27 +446,27 @@ public class SampleController implements Initializable{
 	        case "MP4":
 	        	box_video.setItems(FXCollections.observableArrayList(VCodec.LIBX264.name(), VCodec.LIBX265.name(), VCodec.LIBXVID.name()));
 	        	box_audio.setItems(FXCollections.observableArrayList(ACodec.AAC.name(), ACodec.MP3LAME.name()));
-	        	destination.extension = Extension.MP4;
+	        	Main.destination.extension = Extension.MP4;
 	        	break;
 	        case "GP":
 	        	box_video.setItems(FXCollections.observableArrayList(VCodec.LIBX264.name(), VCodec.LIBX265.name()));
 	        	box_audio.setItems(FXCollections.observableArrayList(ACodec.AAC.name()));
-	        	destination.extension = Extension.GP;
+	        	Main.destination.extension = Extension.GP;
 	        	break;
 	        case "G2":
 	        	box_video.setItems(FXCollections.observableArrayList(VCodec.LIBX264.name(), VCodec.LIBXVID.name()));
 		        box_audio.setItems(FXCollections.observableArrayList(ACodec.AAC.name()));
-		        destination.extension = Extension.G2;
+		        Main.destination.extension = Extension.G2;
 	        	break;
 	        case "MKV":
 	        	box_video.setItems(FXCollections.observableArrayList(VCodec.LIBX264.name(), VCodec.LIBX265.name(), VCodec.LIBXVID.name()));
 	        	box_audio.setItems(FXCollections.observableArrayList(ACodec.VORBIS.name(), ACodec.OPUS.name(), ACodec.MP3LAME.name(), ACodec.FLAC.name(), ACodec.AAC.name()));
-	        	destination.extension = Extension.MKV;
+	        	Main.destination.extension = Extension.MKV;
 	        	break;
 	        case "AVI":
 	        	box_video.setItems(FXCollections.observableArrayList(VCodec.LIBXVID.name()));
 	        	box_audio.setItems(FXCollections.observableArrayList(ACodec.MP3LAME.name()));
-	        	destination.extension = Extension.AVI;
+	        	Main.destination.extension = Extension.AVI;
 	        	break;
 	        default:
 	        	break;
@@ -487,7 +483,7 @@ public class SampleController implements Initializable{
 		    	  System.out.println(box_audio.getItems().get((Integer) new_value));
 		    	  for(ACodec audio : ACodec.values()) {
 		    		if(aud==audio.name())
-		    	  		destination.acodec = audio ;
+		    	  		Main.destination.acodec = audio ;
 		    	  }
 		      }
 		    });
@@ -500,7 +496,7 @@ public class SampleController implements Initializable{
 		    	  System.out.println(box_video.getItems().get((Integer) new_value));
 		    	  for(VCodec video : VCodec.values()) {
 		    		if(vid==video.name())
-		    			destination.vcodec = video;
+		    			Main.destination.vcodec = video;
 		    	  }
 		      }
 		    });

@@ -11,6 +11,7 @@ import java.util.jar.JarInputStream;
 import java.util.zip.Adler32;
 import java.util.zip.CheckedInputStream;
 
+import data.Destination;
 import data.Source;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -27,6 +28,10 @@ public class Main extends Application {
 	public static final String pathToJarFile = System.getProperty("java.class.path");
 	public static final String fileFFMpeg = "ffmpeg.exe";
 	static boolean isEncoding = false;
+	
+	public static Source source;
+	public static Destination destination;
+	
 	@Override
 	public void start(Stage primaryStage) {
 		try {
