@@ -22,6 +22,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
@@ -70,6 +71,23 @@ public class SampleController implements Initializable{
 	@FXML
     private CheckBox checkbox_cut_video;
 	
+	//crf
+	@FXML
+    private CheckBox checkbox_crf;
+    @FXML
+    private Slider slider_crf;
+    @FXML
+    private TextField text_crf;
+    
+    //bitrate
+    @FXML
+    private TextField text_bitrate;
+    @FXML
+    private Slider slider_bitrate;
+    @FXML
+    private CheckBox checkbox_bitrate;
+
+
 	//Slider pour le temps de debut (From)
 	@FXML
     private Slider slider_from;
@@ -104,11 +122,16 @@ public class SampleController implements Initializable{
 		if(video != null) {
 			view_video.getItems().add(video.getAbsolutePath());
 			source = new Source(video.getAbsolutePath());
+			//on met a jour les labels des sliders From/To
 			float time=source.duration;
 			label_to.setText(Main.timeToString(time));
 			label_from.setText(Main.timeToString(0f));
+			//on met a jour la destination
 			destination=new Destination(source);
 			destination.end_cut=source.duration;
+			//on met a jour le bitrate proposé
+			slider_bitrate.setValue(destination.resolution.width*destination.resolution.height*60/10000);
+			text_bitrate.setText(String.valueOf(destination.resolution.width*destination.resolution.height*60/10000));
 		}
 		else {
 			System.out.println("the file is not a video");
@@ -147,7 +170,7 @@ public class SampleController implements Initializable{
 		}
 		else {
 			System.out.println("the file is not an audio");
-		}	
+		}
 	}
 	
 	//Methode pour choisir le(s) fichier(s) de sous-titre(s)
@@ -170,12 +193,12 @@ public class SampleController implements Initializable{
 	//Methode pour la checkbox cut_the_video
 	public void checkCheckboxCutVideo() {
 		if(checkbox_cut_video.isSelected()) {
-			grid_from.setVisible(true);
-			grid_to.setVisible(true);
+			grid_from.setDisable(false);
+			grid_to.setDisable(false);
 		}
 		else {
-			grid_from.setVisible(false);
-			grid_to.setVisible(false);
+			grid_from.setDisable(true);
+			grid_to.setDisable(true);
 			//on reset les changements
 			if(destination!=null) {
 				destination.start_cut=0f;
@@ -186,6 +209,75 @@ public class SampleController implements Initializable{
 			slider_to.setValue(100);
 		}
 	}
+	
+	//Methode pour la checkbox crf
+	public void checkCheckboxCRF() {
+		if(checkbox_crf.isSelected()) {
+			slider_crf.setDisable(false);
+			text_crf.setDisable(false);
+			slider_crf.setValue(30);
+			text_crf.setText(String.valueOf(30));
+			
+			checkbox_bitrate.setSelected(false);
+			slider_bitrate.setDisable(true);
+			text_bitrate.setDisable(true);
+			text_bitrate.setText("");
+		}
+		else {
+			checkbox_bitrate.setSelected(true);
+			slider_bitrate.setDisable(false);
+			text_bitrate.setDisable(false);
+			if(destination!=null) {
+				slider_bitrate.setValue(destination.resolution.width*destination.resolution.height*60/10000);
+				text_bitrate.setText(String.valueOf(destination.resolution.width*destination.resolution.height*60/10000));
+			}
+			else {
+				slider_bitrate.setValue(100);
+				text_bitrate.setText(String.valueOf(100));
+			}
+			
+			slider_crf.setDisable(true);
+			text_crf.setDisable(true);
+			text_crf.setText("");
+		}
+	}
+	
+	//Methode pour la checkbox bitrate
+	public void checkCheckboxBitrate() {
+		if(checkbox_bitrate.isSelected()) {
+			if(destination!=null) {
+				slider_bitrate.setValue(destination.resolution.width*destination.resolution.height*60/10000);
+				text_bitrate.setText(String.valueOf(destination.resolution.width*destination.resolution.height*60/10000));
+			}
+			else {
+				slider_bitrate.setValue(100);
+				text_bitrate.setText(String.valueOf(100));
+			}
+			slider_bitrate.setDisable(false);
+			text_bitrate.setDisable(false);
+			
+			checkbox_crf.setSelected(false);
+			slider_crf.setDisable(true);
+			text_crf.setDisable(true);
+			text_crf.setText("");
+		}
+		else {
+			checkbox_crf.setSelected(true);
+			slider_crf.setDisable(false);
+			text_crf.setDisable(false);
+			slider_crf.setValue(30);
+			text_crf.setText(String.valueOf(30));
+			
+			slider_bitrate.setDisable(true);
+			text_bitrate.setDisable(true);
+			text_bitrate.setText("");
+		}
+	}
+
+	//Methode pour le textField crf
+		public void textFieldCRF() {
+			
+		}
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -231,6 +323,29 @@ public class SampleController implements Initializable{
 				slider_from.setMax(slider_to.getValue());
 			}
 		});
+		
+		//Methode pour gerer le scroll du CRF
+		slider_crf.valueProperty().addListener(new ChangeListener<Number>() {
+			public void changed(ObservableValue<? extends Number> arg0, Number arg1, Number arg2) {
+				int valueSlider=(int)slider_crf.getValue();
+				if(destination!=null) {
+					//ajout dans destination
+				}
+				text_crf.setText(String.valueOf(valueSlider));
+			}
+		});
+		
+		//Methode pour gerer le scroll du CRF
+		slider_bitrate.valueProperty().addListener(new ChangeListener<Number>() {
+			public void changed(ObservableValue<? extends Number> arg0, Number arg1, Number arg2) {
+				int valueSlider=(int)slider_bitrate.getValue();
+				if(destination!=null) {
+					//ajout dans destination
+				}
+				text_bitrate.setText(String.valueOf(valueSlider));
+			}
+		});
+		
 		box_extension.setValue("");
 		box_video.setValue("");
 		box_extension.setItems(video_extension_list);

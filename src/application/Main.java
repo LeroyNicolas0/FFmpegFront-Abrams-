@@ -31,8 +31,9 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 		try {
 			BorderPane root = (BorderPane)FXMLLoader.load(getClass().getResource("Sample.fxml"));
-			Scene scene = new Scene(root,500,350);
+			Scene scene = new Scene(root,500,400);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+			primaryStage.setTitle("Abrams- FFmpegFront");
 			primaryStage.setScene(scene);
 			primaryStage.show();
 			
