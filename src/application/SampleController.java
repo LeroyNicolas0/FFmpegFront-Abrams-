@@ -1,6 +1,8 @@
 package application;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -167,12 +169,33 @@ public class SampleController implements Initializable{
 		String PathToFileWrite = Main.pathTempDirectory+Main.fileCommand;
 		if(!Main.isEncoding) {
 			try {
-				Process p =  Runtime.getRuntime().exec("cmd /c command.bat", null, new File(Main.pathTempDirectory));
-			} catch (IOException e) {
+				ProcessBuilder procBuilder = new ProcessBuilder(Main.pathTempDirectory + Main.fileCommand);
+				procBuilder.redirectErrorStream(true);
+				Process proc = procBuilder.start();
+				boolean checked = false;
+
+				BufferedReader infoBuff = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+				String lineToParse = null;
+				while ((lineToParse = infoBuff.readLine()) != null) {
+					if (lineToParse.contains("time=")) {
+						//System.out.println(lineToParse);
+						String extractedLine = lineToParse.substring(lineToParse.indexOf("time=")+5,
+						lineToParse.indexOf("time=")+17);
+						//System.out.println("Line parsed : " + lineToParse);
+						System.out.println("Strings extracted : " + extractedLine);	
+						
+						System.out.println(Main.stringToTime(extractedLine));	
+						
+					}
+				}
+				}
+				catch (IOException e) {
 				System.out.println("bug");
 				e.printStackTrace();
 			}
 		}
+		else
+			System.out.println("Already encoding");
 		
 	}
 	
