@@ -30,7 +30,7 @@ public class Destination extends Source {
 	
 	public String Generate_command(Source origin) {
 		String command="";
-		command+="ffmpeg ";
+		command+="ffmpeg -y ";
 		int input_n=0;
 		if (start_cut!=0) {
 			command +="-ss "+Float.toString(start_cut)+" ";
