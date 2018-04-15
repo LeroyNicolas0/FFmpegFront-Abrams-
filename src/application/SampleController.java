@@ -51,8 +51,6 @@ public class SampleController implements Initializable{
 	private Button browse_audio;
 	@FXML
     private Label label_audio;
-	@FXML
-    private CheckBox checkbox_add_audio;
 	
 	//Bouton pour choisir le dossier de destination
 	@FXML
