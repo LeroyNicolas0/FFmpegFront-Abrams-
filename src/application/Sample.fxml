@@ -197,7 +197,7 @@
                   <CheckBox fx:id="checkbox_crf" mnemonicParsing="false" onAction="#checkCheckboxCRF" text="CRF :" GridPane.halignment="CENTER" />
                   <Slider fx:id="slider_crf" blockIncrement="1.0" disable="true" max="51.0" minorTickCount="1" rotate="180.0" value="30.0" GridPane.columnIndex="1" />
                   <TextField fx:id="text_crf" disable="true" promptText="CRF value" GridPane.columnIndex="2" />
-                  <TextField fx:id="text_bitrate" promptText="Bitrate value" GridPane.columnIndex="5" />
+                  <TextField fx:id="text_bitrate" promptText="Video bitrate (kb/s)" GridPane.columnIndex="5" />
                   <Slider fx:id="slider_bitrate" max="200000.0" min="100.0" value="100.0" GridPane.columnIndex="4" />
                   <CheckBox fx:id="checkbox_bitrate" mnemonicParsing="false" onAction="#checkCheckboxBitrate" selected="true" text="Bitrate :" GridPane.columnIndex="3" GridPane.halignment="CENTER" />
                </children>

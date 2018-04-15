@@ -324,7 +324,7 @@ public class SampleController implements Initializable{
 			}
 			else {
 				slider_bitrate.setValue(100);
-				text_bitrate.setText(String.valueOf(100));
+				text_bitrate.setText(String.valueOf(100)+" kb/s");
 			}
 			slider_bitrate.setDisable(false);
 			text_bitrate.setDisable(false);
@@ -429,23 +429,33 @@ public class SampleController implements Initializable{
 		});
 		
 		//Methode pour le textField crf
-		text_crf.textProperty().addListener(new ChangeListener<String>() {
+		ChangeListener<? super Boolean> crf_listener=new ChangeListener<Boolean>() {
 			@Override
-			public void changed(ObservableValue<? extends String> arg0, String arg1, String arg2) {
-				if(text_crf.getText()!=null && text_crf.getText().matches("\\d+")) {
-					int value=Integer.parseInt(text_crf.getText());
-					if(value>=0 && value<=51) {
+			public void changed(ObservableValue<? extends Boolean> arg0, Boolean arg1, Boolean arg2) {
+				if(text_crf.getText()!=null ) {
+					Pattern pattern = Pattern.compile("\\d+");
+					Matcher matcher = pattern.matcher(text_crf.getText());
+					if (matcher.find()) {
+						int value=Integer.parseInt(matcher.group(0));
+						System.out.println(value);
+						if (value>51) {
+							value=51;
+						}
+						else if (value<0) {
+							value=0;
+						}
 						slider_crf.setValue(value);
-						if(Main.destination!=null) {
-							Main.destination.crf=value;
+						text_crf.setText(Integer.toString((int)slider_crf.getValue()));
+							if(Main.destination!=null) {
+								Main.destination.vbitrate=value;
+							}
 						}
 					}
 				}		
-			}
-		});		
+			};
+			text_crf.focusedProperty().addListener(crf_listener);
 		//Methode pour le textField bitrate
-
-				ChangeListener<? super Boolean> bitrate_listener=new ChangeListener<Boolean>() {
+			ChangeListener<? super Boolean> bitrate_listener=new ChangeListener<Boolean>() {
 			@Override
 			public void changed(ObservableValue<? extends Boolean> arg0, Boolean arg1, Boolean arg2) {
 				if(text_bitrate.getText()!=null ) {
@@ -457,8 +467,8 @@ public class SampleController implements Initializable{
 						if (value>200000) {
 							value=200000;
 						}
-						else if (value<1) {
-							value=1;
+						else if (value<100) {
+							value=100;
 						}
 						slider_bitrate.setValue(value);
 						text_bitrate.setText(Integer.toString(value)+ " kb/s");
@@ -470,6 +480,33 @@ public class SampleController implements Initializable{
 				}		
 			};
 			text_bitrate.focusedProperty().addListener(bitrate_listener);
+			
+			//Methode pour le textField abitrate
+			ChangeListener<? super Boolean> abitrate_listener=new ChangeListener<Boolean>() {
+			@Override
+			public void changed(ObservableValue<? extends Boolean> arg0, Boolean arg1, Boolean arg2) {
+				if(abitrate_field.getText()!=null ) {
+					Pattern pattern = Pattern.compile("\\d+");
+					Matcher matcher = pattern.matcher(abitrate_field.getText());
+					if (matcher.find()) {
+						int value=Integer.parseInt(matcher.group(0));
+						System.out.println(value);
+						if (value>640) {
+							value=640;
+						}
+						else if (value<1) {
+							value=1;
+						}
+						abitrate_slider.setValue(value);
+						abitrate_field.setText(Integer.toString(value)+ " kb/s");
+							if(Main.destination!=null) {
+								Main.destination.abitrate=value;
+							}
+						}
+					}
+				}		
+			};
+			abitrate_field.focusedProperty().addListener(abitrate_listener);
 			
 		text_name.textProperty().addListener(new ChangeListener<String>() {
 			@Override
