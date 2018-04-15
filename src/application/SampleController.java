@@ -35,6 +35,7 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 
 public class SampleController implements Initializable{
 	
@@ -142,6 +143,14 @@ public class SampleController implements Initializable{
 	@FXML
 	private TextField abitrate_field;
 	
+	@FXML 
+	private ChoiceBox<Resolution> res_list;
+	
+	@FXML
+	private TextField resolution_w;
+	@FXML
+	private TextField resolution_h;
+	
 	//Methode pour choisir le fichier video
 	public void ButtonBrowseVideoAction(ActionEvent event) {
 		FileChooser fc = new FileChooser();
@@ -165,6 +174,22 @@ public class SampleController implements Initializable{
 			text_bitrate.setText(String.valueOf(Main.destination.resolution.width*Main.destination.resolution.height*60/10000));
 			checkbox_cut_video.setDisable(false);
 			subtitle_window_button.setDisable(false);
+
+			res_list.setConverter(new StringConverter<Resolution>(){
+				@Override
+				public String toString(Resolution r) {
+					return r.print();
+				}	
+				@Override
+				public Resolution fromString(String string) {
+					return new Resolution(string);
+				}
+			});
+			if (!Main.source.resolution.is_16_9()) {
+				res_list.getItems().addAll(Main.source.resolution.get_360p_ratio(),Main.source.resolution.get_480p_ratio(),Main.source.resolution.get_720p_ratio(),Main.source.resolution.get_1080p_ratio());
+			} else {
+				res_list.getItems().addAll(Resolution.get_360p(),Resolution.get_480p(),Resolution.get_720p(),Resolution.get_1080p());			
+			}
 		}
 		else {
 			System.out.println("the file is not a video");
@@ -575,6 +600,15 @@ public class SampleController implements Initializable{
 		      }
 		    });
 		
+		//Méthode pour choix résolution
+		res_list.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Resolution>() {
+			@Override
+			public void changed(ObservableValue<? extends Resolution> observableValue, Resolution old_value, Resolution new_value) {
+				resolution_w.setText(Integer.toString(new_value.width));
+				resolution_h.setText(Integer.toString(new_value.height));
+			}
+		});
+
 		//Mï¿½thode pour choix codec video
 		box_video.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
 			@Override
