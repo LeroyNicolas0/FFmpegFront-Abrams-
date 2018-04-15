@@ -23,21 +23,12 @@ public class SubtitleController implements Initializable{
 				int valueSlider=(int)slider_subtitle.getValue();
 				if(Main.destination!=null) {
 					float time=Main.destination.duration*valueSlider/100;
-					//Ce if sert à assurer qu'il y ait au moins une seconde de video
-					if(valueSlider==100) {
-						time--;
-					}
 					label_slider_subtitle.setText(Main.timeToString(time));
-					//On garde les donnees de la destination a jour
-					Main.destination.start_cut=time;
-					Main.destination.duration=Main.destination.end_cut-Main.destination.start_cut;
 				}
 				else {
 					label_slider_subtitle.setText(String.valueOf(valueSlider) + "%");
 				}
-				slider_subtitle.setMin(slider_subtitle.getValue());
 			}
 		});
-		
 	 }
 }
