@@ -276,9 +276,7 @@ public class SampleController implements Initializable{
 	}
 
 	//Methode pour le textField crf
-		public void textFieldCRF() {
-			
-		}
+
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -346,6 +344,19 @@ public class SampleController implements Initializable{
 				text_bitrate.setText(String.valueOf(valueSlider));
 			}
 		});
+		
+		text_crf.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> arg0, String arg1, String arg2) {
+				System.out.println("plop");
+				if(text_crf.getText()!=null && text_crf.getText().matches("\\d+")) {
+					int value=Integer.parseInt(text_crf.getText());
+					if(value>0 && value<51) {
+						slider_crf.setValue(value);
+					}
+				}		
+			}
+		});	
 		
 		box_extension.setValue("");
 		box_video.setValue("");
