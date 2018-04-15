@@ -156,9 +156,11 @@ public class SampleController implements Initializable{
 			//on met a jour le bitrate proposé
 			slider_bitrate.setValue(destination.resolution.width*destination.resolution.height*60/10000);
 			text_bitrate.setText(String.valueOf(destination.resolution.width*destination.resolution.height*60/10000));
+			checkbox_cut_video.setDisable(false);
 		}
 		else {
 			System.out.println("the file is not a video");
+			checkbox_cut_video.setDisable(true);
 		}		
 	}
 	
@@ -237,12 +239,12 @@ public class SampleController implements Initializable{
 	//Methode pour la checkbox cut_the_video
 	public void checkCheckboxCutVideo() {
 		if(checkbox_cut_video.isSelected()) {
-			grid_from.setDisable(false);
-			grid_to.setDisable(false);
+			grid_from.setVisible(true);
+			grid_to.setVisible(true);
 		}
 		else {
-			grid_from.setDisable(true);
-			grid_to.setDisable(true);
+			grid_from.setVisible(false);
+			grid_to.setVisible(false);
 			//on reset les changements
 			if(destination!=null) {
 				destination.start_cut=0f;
