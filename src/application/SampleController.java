@@ -194,6 +194,24 @@ public class SampleController implements Initializable{
 		}
 	}
 	
+	//Ouverture de la fenetre de barre de progression
+		public void openProgressBarWindow() {
+			BorderPane secondaryLayout;
+			try {
+				secondaryLayout = FXMLLoader.load(getClass().getResource("ProgressBarWindow.fxml"));
+				Scene thirdScene = new Scene(secondaryLayout, 900, 350);
+				
+				Stage thirdStage = new Stage();
+				thirdStage.setTitle("Current progress");
+				thirdStage.setScene(thirdScene);
+				
+				thirdStage.show();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	
 	//Methode pour choisir le(s) fichier(s) audio
 	public void ButtonBrowseAudioAction(ActionEvent event) {
 		FileChooser fc = new FileChooser();
