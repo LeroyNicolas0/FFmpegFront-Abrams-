@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
-import Enums.*;
 
+import Enums.ACodec;
+import Enums.Extension;
+import Enums.VCodec;
 import data.Destination;
 import data.Source;
 import javafx.beans.value.ChangeListener;
@@ -26,6 +28,7 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
@@ -50,6 +53,10 @@ public class SampleController implements Initializable{
     private Label label_audio;
 	@FXML
     private CheckBox checkbox_add_audio;
+	
+	//Bouton pour choisir le dossier de destination
+	@FXML
+	private Button browse_directory;
 	
 	//Choix de l'extension;
 	@FXML
@@ -91,6 +98,12 @@ public class SampleController implements Initializable{
     private Slider slider_bitrate;
     @FXML
     private CheckBox checkbox_bitrate;
+    
+    //Nom fichier sortie
+    @FXML TextField text_name;
+    
+  //Nom dossier sortie
+    @FXML TextField text_directory;
 
 
 	//Slider pour le temps de debut (From)
@@ -106,13 +119,14 @@ public class SampleController implements Initializable{
     private Label label_to;
 		
 	@FXML
-	private ListView<String> view_video;
+	private TextField text_video;
 	
 	@FXML
 	private ListView<String> view_audio;
 	
 	@FXML
 	private ListView<String> view_sub;
+	
 	
 	private Source source;
 	private  Destination destination;
@@ -125,7 +139,8 @@ public class SampleController implements Initializable{
 					
 		File video = fc.showOpenDialog(null);
 		if(video != null) {
-			view_video.getItems().add(video.getAbsolutePath());
+			text_video.setText(video.getAbsolutePath());
+			System.out.println(video.getAbsolutePath());
 			source = new Source(video.getAbsolutePath());
 			//on met a jour les labels des sliders From/To
 			float time=source.duration;
@@ -194,6 +209,20 @@ public class SampleController implements Initializable{
 			System.out.println("the file is not a subtitle");
 		}		
 	}
+	
+	//Methode pour choisir le dossier de destination
+		public void ButtonBrowserDestination(ActionEvent event) {
+			DirectoryChooser dc = new DirectoryChooser();
+								
+			File dir = dc.showDialog(null);
+			if(dir != null) {
+					text_directory.setText(dir.getAbsolutePath());
+					destination.file_path = dir.getAbsolutePath();
+			}
+			else {
+				System.out.println("choose a directory");
+			}		
+		}
 	
 	//Methode pour la checkbox cut_the_video
 	public void checkCheckboxCutVideo() {
@@ -384,7 +413,15 @@ public class SampleController implements Initializable{
 					}
 				}		
 			}
-		});	
+		});
+		
+		text_name.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> arg0, String arg1, String arg2) {
+						destination.name = text_name.getText() + "." + destination.extension.get_ext();
+						System.out.println(destination.name);
+				}		
+		});
 		
 		box_extension.setValue("");
 		box_video.setValue("");
