@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import Enums.*;
 
 import data.Destination;
 import data.Source;
@@ -32,7 +33,7 @@ import javafx.stage.Stage;
 public class SampleController implements Initializable{
 	
 	ObservableList<String> video_extension_list = FXCollections
-				.observableArrayList("MP4", "GP", "G2", "MKV", "AVI");
+				.observableArrayList(Extension.MP4.name(), Extension.GP.name(), Extension.G2.name(), Extension.MKV.name(), Extension.AVI.name() );
 	ObservableList<String> audio_codec_list = FXCollections
 			.observableArrayList();
 	ObservableList<String> video_codec_list = FXCollections
@@ -350,34 +351,40 @@ public class SampleController implements Initializable{
 		box_video.setValue("");
 		box_extension.setItems(video_extension_list);
 		
-		
+		//Méthode pour choix extension vidéo
 		box_extension.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
 	      @Override
 	      public void changed(ObservableValue<? extends Number> observableValue, Number old_value, Number new_value) {
 	    	String option;
 	        System.out.println(box_extension.getItems().get((Integer) new_value));
 	        option = (String) box_extension.getItems().get((Integer) new_value);
+        
 	        switch (option)
 	        {
 	        case "MP4":
-	        	box_video.setItems(FXCollections.observableArrayList("LIBX264", "LIBX265", "LIBXVID"));
-	        	box_audio.setItems(FXCollections.observableArrayList("AAC", "MP3LAME"));
+	        	box_video.setItems(FXCollections.observableArrayList(VCodec.LIBX264.name(), VCodec.LIBX265.name(), VCodec.LIBXVID.name()));
+	        	box_audio.setItems(FXCollections.observableArrayList(ACodec.AAC.name(), ACodec.MP3LAME.name()));
+	        	destination.extension = Extension.MP4;
 	        	break;
 	        case "GP":
-	        	box_video.setItems(FXCollections.observableArrayList("LIBX264", "LIBXVID"));
-	        	box_audio.setItems(FXCollections.observableArrayList("AAC"));
+	        	box_video.setItems(FXCollections.observableArrayList(VCodec.LIBX264.name(), VCodec.LIBX265.name()));
+	        	box_audio.setItems(FXCollections.observableArrayList(ACodec.AAC.name()));
+	        	destination.extension = Extension.GP;
 	        	break;
 	        case "G2":
-	        	box_video.setItems(FXCollections.observableArrayList("LIBX264", "LIBXVID"));
-		        box_audio.setItems(FXCollections.observableArrayList("AAC"));
+	        	box_video.setItems(FXCollections.observableArrayList(VCodec.LIBX264.name(), VCodec.LIBXVID.name()));
+		        box_audio.setItems(FXCollections.observableArrayList(ACodec.AAC.name()));
+		        destination.extension = Extension.G2;
 	        	break;
 	        case "MKV":
-	        	box_video.setItems(FXCollections.observableArrayList("LIBX264", "LIBX265", "LIBXVID"));
-	        	box_audio.setItems(FXCollections.observableArrayList("VORBIS", "OPUS", "MP3LAME", "FLAC", "AAC"));
+	        	box_video.setItems(FXCollections.observableArrayList(VCodec.LIBX264.name(), VCodec.LIBX265.name(), VCodec.LIBXVID.name()));
+	        	box_audio.setItems(FXCollections.observableArrayList(ACodec.VORBIS.name(), ACodec.OPUS.name(), ACodec.MP3LAME.name(), ACodec.FLAC.name(), ACodec.AAC.name()));
+	        	destination.extension = Extension.MKV;
 	        	break;
 	        case "AVI":
-	        	box_video.setItems(FXCollections.observableArrayList("LIBXVID"));
-	        	box_audio.setItems(FXCollections.observableArrayList("MP3LAME"));
+	        	box_video.setItems(FXCollections.observableArrayList(VCodec.LIBXVID.name()));
+	        	box_audio.setItems(FXCollections.observableArrayList(ACodec.MP3LAME.name()));
+	        	destination.extension = Extension.AVI;
 	        	break;
 	        default:
 	        	break;
@@ -385,5 +392,31 @@ public class SampleController implements Initializable{
 	      }
 
 	    });
+		
+		//Méthode pour choix codec audio
+		box_audio.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+		      @Override
+		      public void changed(ObservableValue<? extends Number> observableValue, Number old_value, Number new_value) {
+		    	  String aud = (String) box_audio.getItems().get((Integer) new_value);
+		    	  System.out.println(box_audio.getItems().get((Integer) new_value));
+		    	  for(ACodec audio : ACodec.values()) {
+		    		if(aud==audio.name());
+		    	  		destination.acodec = audio ;
+		    	  }
+		      }
+		    });
+		
+		//Méthode pour choix codec video
+		box_video.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+			@Override
+		      public void changed(ObservableValue<? extends Number> observableValue, Number old_value, Number new_value) {
+		    	  String vid = (String) box_video.getItems().get((Integer) new_value);
+		    	  System.out.println(box_video.getItems().get((Integer) new_value));
+		    	  for(VCodec video : VCodec.values()) {
+		    		if(vid==video.name());
+		    			destination.vcodec = video;
+		    	  }
+		      }
+		    });
 	}
 }

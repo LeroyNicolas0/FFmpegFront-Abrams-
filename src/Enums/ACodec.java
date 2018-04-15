@@ -6,7 +6,8 @@ public enum ACodec {
 	MP3LAME("mp3", "MP3 LAME encoding"),
 	FLAC("flac","Free Audio Lossless Codec"),
 	AAC("aac","Advanced Audio Codec"),
-	ALL(null,"Marker for all supported Audio codecs");
+	ALL(null,"Marker for all supported Audio codecs"),
+	NONE("null","No Audio");
 	
 	private String library;
 	private String desc;

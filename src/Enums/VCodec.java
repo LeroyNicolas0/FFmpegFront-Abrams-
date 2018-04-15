@@ -22,7 +22,7 @@ public enum VCodec {
 		return this.desc;
 	}
 	public static VCodec[] Get_All() {
-		return new VCodec[] {LIBX264,LIBX265,LIBXVID,NONE};
+		return new VCodec[] {LIBX264,LIBX265,LIBXVID};
 	}
 
 }
