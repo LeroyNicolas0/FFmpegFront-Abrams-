@@ -46,6 +46,10 @@ public class SampleController implements Initializable{
 	//Bouton pour choisir le(s) fichier(s) audio
 	@FXML
 	private Button browse_audio;
+	@FXML
+    private Label label_audio;
+	@FXML
+    private CheckBox checkbox_add_audio;
 	
 	//Choix de l'extension;
 	@FXML
@@ -210,6 +214,20 @@ public class SampleController implements Initializable{
 			slider_to.setValue(100);
 		}
 	}
+	
+	//Methode pour la checkbox audio
+		public void checkCheckboxAudio() {
+			if(checkbox_add_audio.isSelected()) {
+				label_audio.setDisable(false);
+				view_audio.setDisable(false);
+				browse_audio.setDisable(false);
+			}
+			else {
+				label_audio.setDisable(true);
+				view_audio.setDisable(true);
+				browse_audio.setDisable(true);
+			}
+		}
 	
 	//Methode pour la checkbox crf
 	public void checkCheckboxCRF() {
