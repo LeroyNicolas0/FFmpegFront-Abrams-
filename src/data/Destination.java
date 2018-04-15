@@ -32,20 +32,19 @@ public class Destination extends Source {
 		String command="";
 		command+="ffmpeg ";
 		int input_n=0;
-		boolean subs;
 		if (start_cut!=0) {
 			command +="-ss "+Float.toString(start_cut)+" ";
 		}
-		command+="-i "+origin.file_path+" ";
+		command+="-i \""+origin.file_path+"\" ";
 		for (AudioTrack a: this.pistes_audio){
 			input_n++;
 			if (!a.integrated) {
-				command+="-i "+a.file+" ";
+				command+="-i \""+a.file+"\" ";
 			}
 		}
 		for (SubtitleTrack s: this.st) {
 			if (!s.integrated) {
-				command+="-i "+s.file+" ";
+				command+="-i \""+s.file+"\" ";
 			}
 		}
 		if (vcodec!=VCodec.NONE) {
@@ -72,7 +71,7 @@ public class Destination extends Source {
 			command+="-map "+ Integer.toString(i)+" ";
 		}
 		command+="-t "+Float.toString(this.duration)+" ";
-		command+=this.file_path; 
+		command+="\""+this.file_path+"\" "; 
 		return command;
 	}
 }
