@@ -128,7 +128,10 @@ public class SampleController implements Initializable{
 	private ListView<String> view_audio;
 	
 	@FXML
-	private ListView<String> view_sub;	
+	private ListView<String> view_sub;
+	
+	@FXML
+	private Button subtitle_window_button;
 	
 	//Methode pour choisir le fichier video
 	public void ButtonBrowseVideoAction(ActionEvent event) {
@@ -152,10 +155,12 @@ public class SampleController implements Initializable{
 			slider_bitrate.setValue(Main.destination.resolution.width*Main.destination.resolution.height*60/10000);
 			text_bitrate.setText(String.valueOf(Main.destination.resolution.width*Main.destination.resolution.height*60/10000));
 			checkbox_cut_video.setDisable(false);
+			subtitle_window_button.setDisable(false);
 		}
 		else {
 			System.out.println("the file is not a video");
 			checkbox_cut_video.setDisable(true);
+			subtitle_window_button.setDisable(true);
 		}		
 	}
 	
@@ -261,20 +266,7 @@ public class SampleController implements Initializable{
 		}
 	}
 	
-	//Methode pour la checkbox audio
-		public void checkCheckboxAudio() {
-			if(checkbox_add_audio.isSelected()) {
-				label_audio.setDisable(false);
-				view_audio.setDisable(false);
-				browse_audio.setDisable(false);
-			}
-			else {
-				label_audio.setDisable(true);
-				view_audio.setDisable(true);
-				browse_audio.setDisable(true);
-			}
-		}
-	
+
 	//Methode pour la checkbox crf
 	public void checkCheckboxCRF() {
 		if(checkbox_crf.isSelected()) {
