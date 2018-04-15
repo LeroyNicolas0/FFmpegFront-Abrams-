@@ -223,6 +223,10 @@ public class SampleController implements Initializable{
 			slider_bitrate.setDisable(true);
 			text_bitrate.setDisable(true);
 			text_bitrate.setText("");
+			if(destination!=null) {
+				destination.use_crf=true;
+				destination.crf=30f;
+			}
 		}
 		else {
 			checkbox_bitrate.setSelected(true);
@@ -231,6 +235,7 @@ public class SampleController implements Initializable{
 			if(destination!=null) {
 				slider_bitrate.setValue(destination.resolution.width*destination.resolution.height*60/10000);
 				text_bitrate.setText(String.valueOf(destination.resolution.width*destination.resolution.height*60/10000));
+				destination.use_crf=false;
 			}
 			else {
 				slider_bitrate.setValue(100);
@@ -249,6 +254,8 @@ public class SampleController implements Initializable{
 			if(destination!=null) {
 				slider_bitrate.setValue(destination.resolution.width*destination.resolution.height*60/10000);
 				text_bitrate.setText(String.valueOf(destination.resolution.width*destination.resolution.height*60/10000));
+				destination.vbitrate=destination.resolution.width*destination.resolution.height*60/10000;
+				destination.use_crf=false;
 			}
 			else {
 				slider_bitrate.setValue(100);
@@ -263,6 +270,9 @@ public class SampleController implements Initializable{
 			text_crf.setText("");
 		}
 		else {
+			if(destination!=null) {
+				destination.use_crf=true;
+			}
 			checkbox_crf.setSelected(true);
 			slider_crf.setDisable(false);
 			text_crf.setDisable(false);
@@ -274,9 +284,6 @@ public class SampleController implements Initializable{
 			text_bitrate.setText("");
 		}
 	}
-
-	//Methode pour le textField crf
-
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -328,31 +335,34 @@ public class SampleController implements Initializable{
 			public void changed(ObservableValue<? extends Number> arg0, Number arg1, Number arg2) {
 				int valueSlider=(int)slider_crf.getValue();
 				if(destination!=null) {
-					//ajout dans destination
+					destination.crf=valueSlider;
 				}
 				text_crf.setText(String.valueOf(valueSlider));
 			}
 		});
 		
-		//Methode pour gerer le scroll du CRF
+		//Methode pour gerer le scroll du bitrate
 		slider_bitrate.valueProperty().addListener(new ChangeListener<Number>() {
 			public void changed(ObservableValue<? extends Number> arg0, Number arg1, Number arg2) {
 				int valueSlider=(int)slider_bitrate.getValue();
 				if(destination!=null) {
-					//ajout dans destination
+					destination.vbitrate=valueSlider;
 				}
 				text_bitrate.setText(String.valueOf(valueSlider));
 			}
 		});
 		
+		//Methode pour le textField crf
 		text_crf.textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> arg0, String arg1, String arg2) {
-				System.out.println("plop");
 				if(text_crf.getText()!=null && text_crf.getText().matches("\\d+")) {
 					int value=Integer.parseInt(text_crf.getText());
-					if(value>0 && value<51) {
+					if(value>=0 && value<=51) {
 						slider_crf.setValue(value);
+						if(destination!=null) {
+							destination.crf=value;
+						}
 					}
 				}		
 			}
