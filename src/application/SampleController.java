@@ -327,7 +327,7 @@ public class SampleController implements Initializable{
 			if(dir != null) {
 					text_directory.setText(dir.getAbsolutePath());
 					System.out.println(text_directory.getText());
-					Main.destination.file_path = text_directory.getText() + "\\";
+					Main.destination.file_path = text_directory.getText() + "\\" + Main.destination.name;
 			}
 			else {
 			}		

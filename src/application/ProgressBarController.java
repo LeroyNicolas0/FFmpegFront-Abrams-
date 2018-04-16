@@ -70,7 +70,9 @@ public class ProgressBarController implements Initializable{
 		 	Thread thread = new Thread(task);
 		 	thread.setDaemon(true);
 		 	thread.start();
-	 		progressBar.progressProperty().bind(task.progressProperty());		 			
+	 		progressBar.progressProperty().bind(task.progressProperty());
+	 		System.out.println(progressBar.progressProperty().getValue());
+	 		value.setText(progressBar.progressProperty().getValue().toString());
 		}
 		else
 			System.out.println("Already encoding");
