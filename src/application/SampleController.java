@@ -682,6 +682,7 @@ public class SampleController implements Initializable{
 	      @Override
 	      public void changed(ObservableValue<? extends Number> observableValue, Number old_value, Number new_value) {
 	    	String option;
+	    	if (box_extension.getValue()!=null) {
 	        System.out.println(box_extension.getItems().get((Integer) new_value));
 	        option = (String) box_extension.getItems().get((Integer) new_value);
 
@@ -812,7 +813,7 @@ public class SampleController implements Initializable{
 	        	break;
 	        }
 	      }
-
+	      }
 	    });
 		
 		//M�thode pour choix codec audio
@@ -851,6 +852,7 @@ public class SampleController implements Initializable{
 		box_video.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
 			@Override
 		      public void changed(ObservableValue<? extends Number> observableValue, Number old_value, Number new_value) {
+				if (box_video.getValue()!=null) {
 		    	  String vid = (String) box_video.getItems().get((Integer) new_value);
 		    	  System.out.println(box_video.getItems().get((Integer) new_value));
 		    	  for(VCodec video : VCodec.values()) {
@@ -858,6 +860,7 @@ public class SampleController implements Initializable{
 		    			Main.destination.vcodec = video;
 		    	  }
 		      }
+			}
 		    });
 	}
 }
