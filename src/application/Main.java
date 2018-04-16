@@ -2,9 +2,11 @@ package application;
 	
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
@@ -13,8 +15,10 @@ import java.util.zip.CheckedInputStream;
 
 import data.Destination;
 import data.Source;
+import data.SubEntry;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -31,6 +35,8 @@ public class Main extends Application {
 	
 	public static Source source;
 	public static Destination destination;
+	//Liste de sous titre
+	public static ObservableList<SubEntry> subListObs;
 	
 	@Override
 	public void start(Stage primaryStage) {
@@ -155,4 +161,19 @@ public class Main extends Application {
 		return timeString;
 	}
 	
+	public static void storeSubs( ObservableList<SubEntry> subList) {
+		try{
+			File subFile=new File(Main.pathTempDirectory+"sub.srt");
+
+    	    BufferedWriter bw = new BufferedWriter(new FileWriter(subFile));
+    	    for (SubEntry subEntry : subList) {
+        	    bw.write(subEntry.send());
+			} 	    
+    	    bw.close(); 		
+    	    
+    	    System.out.println("Done");	
+    	}catch(IOException e){
+    	    e.printStackTrace();		
+    	}
+	}
 }
