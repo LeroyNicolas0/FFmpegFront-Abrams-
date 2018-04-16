@@ -438,6 +438,7 @@ public class SampleController implements Initializable{
 			if (Main.destination!=null) {
 				Main.destination.vcodec=VCodec.NONE;
 			}
+			}
 			else {
 				no_audio.setDisable(false);
 				box_video.setDisable(false);
@@ -453,7 +454,6 @@ public class SampleController implements Initializable{
 				//TODO Changer les Extensions disponibles en extensions video
 			}
 		}
-	}
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
