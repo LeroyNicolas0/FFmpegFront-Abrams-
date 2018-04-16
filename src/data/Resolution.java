@@ -30,6 +30,9 @@ public class Resolution {
 	public static Resolution get_1080p() {
 		return new Resolution(1920,1080);
 	}
+	public static Resolution get_custom() {
+		return new Resolution(0,0);
+	}
 	public boolean is_16_9() {
 		if (1.777<(float)width/(float)height && (float)width/(float)height <1.78) {
 			return true;
@@ -39,26 +42,51 @@ public class Resolution {
 		float ratio=(float)width/(float)height;
 		int h =360;
 		int w =(int)((float)ratio*360);
+		if (w%2!=0) {
+			w++;
+		}
+		if (w<64) {
+			w=64;
+		}
 		return new Resolution(w,h);
 	}
 	public Resolution get_480p_ratio() {
 		float ratio=(float)width/(float)height;
 		int h =480;
 		int w =(int)((float)ratio*480);
+		if (w%2!=0) {
+			w++;
+		}
+		if (w<64) {
+			w=64;
+		}
 		return new Resolution(w,h);
 	}
 	public Resolution get_720p_ratio() {
 		float ratio=(float)width/(float)height;
 		int h =720;
 		int w =(int)((float)ratio*720);
+		if (w%2!=0) {
+			w++;
+		}
+		if (w<64) {
+			w=64;
+		}
 		return new Resolution(w,h);
 	}
 	public Resolution get_1080p_ratio() {
 		float ratio=(float)width/(float)height;
 		int h =1080;
 		int w =(int)((float)ratio*1080);
+		if (w%2!=0) {
+			w++;
+		}
+		if (w<64) {
+			w=64;
+		}
 		return new Resolution(w,h);
 	}
+
 }
 
 
