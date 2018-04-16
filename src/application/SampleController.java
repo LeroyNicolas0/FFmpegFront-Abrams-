@@ -689,7 +689,7 @@ public class SampleController implements Initializable{
 							resolution_w.setText(Integer.toString(value_w));
 							Matcher matcher2 = pattern.matcher(resolution_h.getText());
 							if (matcher2.find() && Main.destination!=null) {
-								int value_h=Integer.parseInt(matcher.group(0));
+								int value_h=Integer.parseInt(matcher2.group(0));
 								Main.destination.resolution=new Resolution(value_w,value_h);	
 								System.out.println(Main.destination.resolution.print());
 								}		
@@ -719,7 +719,7 @@ public class SampleController implements Initializable{
 								Matcher matcher2 = pattern.matcher(resolution_w.getText());
 								System.out.println(resolution_w.getText());
 								if (matcher2.find() && Main.destination!=null) {
-									int value_w=Integer.parseInt(matcher.group(0));
+									int value_w=Integer.parseInt(matcher2.group(0));
 									Main.destination.resolution=new Resolution(value_w,value_h);
 									System.out.println(Main.destination.resolution.print());
 									}		
