@@ -459,7 +459,7 @@ public class SampleController implements Initializable{
 				if(Main.destination!=null) {
 					Main.destination.vbitrate=valueSlider;
 				}
-				text_bitrate.setText(String.valueOf(valueSlider));
+				text_bitrate.setText(String.valueOf(valueSlider)+ "kb/s");
 			}
 		});
 		
