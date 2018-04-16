@@ -63,7 +63,9 @@ public class ProgressBarController implements Initializable{
 				 }
 		 	};
 		 	
-		 	new Thread(task).start();
+		 	Thread thread = new Thread(task);
+		 	thread.setDaemon(true);
+		 	thread.start();
 	 		progressBar.progressProperty().bind(task.progressProperty());		 			
 		}
 		else
