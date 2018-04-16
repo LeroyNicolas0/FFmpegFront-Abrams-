@@ -10,18 +10,24 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 
 public class ProgressBarController implements Initializable{
 	 @FXML
 	 private ProgressBar progressBar;
+	 
+	 @FXML
+	 private Label value;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		progressBar.setProgress(0.0);
 		
 		 if(!Main.isEncoding) {
-			 //Main.isEncoding=true;		 
+			 //Main.isEncoding=true;
+			 value = new Label();
+			 value.setText("0");
 			 Task<Void> task = new Task<Void>(){
 				 @Override
 				 protected Void call() throws Exception {
@@ -46,12 +52,22 @@ public class ProgressBarController implements Initializable{
 						System.out.println("bug");
 						e.printStackTrace();
 					}
+					Platform.runLater(
+						    new Runnable() {
+						        public void run() {
+						        	//System.exit(0);
+						        }
+						    }
+						);
 					return null;
 				 }
 				 
 		 	};
 		 	new Thread(task).start();
 		 		progressBar.progressProperty().bind(task.progressProperty());
+		 		progressBar.progressProperty().getValue();
+		 		value.setText(progressBar.progressProperty().getValue().toString());
+		 		
 		 			
 			}
 			else

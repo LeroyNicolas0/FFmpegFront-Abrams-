@@ -115,6 +115,12 @@ public class SampleController implements Initializable{
     
   //Nom dossier sortie
     @FXML TextField text_directory;
+    
+    //Nom audio add
+    @FXML TextField text_audio_add;
+    
+  //Nom subtitle add
+    @FXML TextField text_subtitle_add;
 
 
 	//Slider pour le temps de debut (From)
@@ -131,12 +137,6 @@ public class SampleController implements Initializable{
 		
 	@FXML
 	private TextField text_video;
-	
-	@FXML
-	private ListView<String> view_audio;
-	
-	@FXML
-	private ListView<String> view_sub;
 	
 	@FXML
 	private Button subtitle_window_button;
@@ -265,13 +265,11 @@ public class SampleController implements Initializable{
 		fc.getExtensionFilters().addAll(
 					new ExtensionFilter("MP3, M4A, OGG, OGA, AAC", "*.mp3", "*.m4a", "*.ogg", "*.oga", "*.aac"));
 							
-		List<File> audio = fc.showOpenMultipleDialog(null);
+		File audio = fc.showOpenDialog(null);
 		if(audio != null) {
-			for(int i = 0; i < audio.size();i++) {
-			view_sub.getItems().add(audio.get(i).getAbsolutePath());
-			Main.destination.pistes_audio.add(new AudioTrack(audio.get(i).getAbsolutePath()));
+				text_audio_add.setText(audio.getAbsolutePath());
+				Main.destination.pistes_audio.add(new AudioTrack(audio.getAbsolutePath()));
 			}
-		}
 		else {
 			System.out.println("the file is not an audio");
 		}
@@ -283,11 +281,10 @@ public class SampleController implements Initializable{
 		fc.getExtensionFilters().addAll(
 					new ExtensionFilter("SRT, MKS", "*.srt", "*.mks"));
 							
-		List<File> sub = fc.showOpenMultipleDialog(null);
+		File sub = fc.showOpenDialog(null);
 		if(sub != null) {
-			for(int i = 0; i < sub.size();i++) {
-			view_sub.getItems().add(sub.get(i).getAbsolutePath());
-			}
+			text_subtitle_add.setText(sub.getAbsolutePath());
+			//view_sub.getItems().add(sub.getAbsolutePath());
 		}
 		else {
 			System.out.println("the file is not a subtitle");
@@ -304,7 +301,6 @@ public class SampleController implements Initializable{
 					Main.destination.file_path = text_directory.getText() + "\\";
 			}
 			else {
-				System.out.println("choose a directory");
 			}		
 		}
 	
@@ -406,7 +402,7 @@ public class SampleController implements Initializable{
 	public void checkCheckBoxno_audio() {
 		if (no_audio.isSelected()) {
 			no_video.setDisable(true);
-			browse_audio.setDisable(true);
+			//browse_audio.setDisable(true);
 			box_audio.setDisable(true);
 			abitrate_slider.setDisable(true);
 			abitrate_field.setDisable(true);
