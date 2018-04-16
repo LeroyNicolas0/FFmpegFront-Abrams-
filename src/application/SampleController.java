@@ -396,7 +396,8 @@ public class SampleController implements Initializable{
 			abitrate_slider.setDisable(true);
 			abitrate_field.setDisable(true);
 			System.out.println("No Audio");
-			box_audio.setItems(null);
+			box_audio.setValue(null);
+			//box_audio.setItems(null);
 			if (Main.destination!=null) {
 				Main.destination.acodec=ACodec.NONE;
 			}
@@ -425,8 +426,9 @@ public class SampleController implements Initializable{
 			text_bitrate.setVisible(false);
 			checkbox_crf.setVisible(false);
 			checkbox_bitrate.setVisible(false);
+			box_extension.setValue(null);
 			box_extension.setItems(audio_extension_list);
-			box_video.setItems(null);
+			box_video.setValue(null);
 			if (Main.destination!=null) {
 				Main.destination.vcodec=VCodec.NONE;
 			}
@@ -443,6 +445,7 @@ public class SampleController implements Initializable{
 				if (Main.destination!=null) {
 					Main.destination.vcodec=null;
 				}
+				box_extension.setValue(null);
 				box_extension.setItems(video_extension_list);
 			}
 		}
@@ -815,12 +818,14 @@ public class SampleController implements Initializable{
 		box_audio.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
 		      @Override
 		      public void changed(ObservableValue<? extends Number> observableValue, Number old_value, Number new_value) {
+		    	  if (!no_audio.isSelected()) {
 		    	  String aud = (String) box_audio.getItems().get((Integer) new_value);
 		    	  System.out.println(box_audio.getItems().get((Integer) new_value));
 		    	  for(ACodec audio : ACodec.values()) {
 		    		if(aud==audio.name())
 		    	  		Main.destination.acodec = audio ;
 		    	  }
+		    	}		      
 		      }
 		    });
 		
