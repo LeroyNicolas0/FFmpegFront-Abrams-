@@ -23,6 +23,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
@@ -30,6 +31,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.DirectoryChooser;
@@ -155,6 +157,8 @@ public class SampleController implements Initializable{
 	@FXML 
 	private CheckBox no_audio;
 	
+	private boolean error;
+	
 	//Methode pour choisir le fichier video
 	public void ButtonBrowseVideoAction(ActionEvent event) {
 		FileChooser fc = new FileChooser();
@@ -208,10 +212,15 @@ public class SampleController implements Initializable{
 	
 	//Methode pour lancer
 	public void ButtonLaunch(ActionEvent event) {
-		if(Main.subListObs!=null && Main.subListObs.size()!=0) {
-			Main.storeSubs(Main.subListObs);
-		}	
-		Main.buildFile(Main.destination.Generate_command(Main.source)); // cree le fichier command.bat		
+		if(!error)
+			Main.buildFile(Main.destination.Generate_command(Main.source)); // crï¿½e le fichier command.bat
+		else {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Erreur");
+			alert.setHeaderText("");
+			alert.setContentText("");
+			alert.showAndWait();
+		}
 	}
 	
 	//Ouverture de la fenetre ajout de sous-titres
@@ -292,7 +301,7 @@ public class SampleController implements Initializable{
 			if(dir != null) {
 					text_directory.setText(dir.getAbsolutePath());
 					System.out.println(text_directory.getText());
-					Main.destination.file_path = text_directory.getText() + "\\" + Main.destination.name;
+					Main.destination.file_path = text_directory.getText() + "\\";
 			}
 			else {
 				System.out.println("choose a directory");
@@ -523,7 +532,7 @@ public class SampleController implements Initializable{
 			}
 		});
 		
-		//Methode pour gérer le scorll du bitrate audio
+		//Methode pour gï¿½rer le scorll du bitrate audio
 		abitrate_slider.valueProperty().addListener(new ChangeListener<Number>(){
 			public void changed(ObservableValue<? extends Number> arg0, Number arg1, Number arg2) {
 				int valueSlider=(int)abitrate_slider.getValue();
@@ -836,7 +845,7 @@ public class SampleController implements Initializable{
 		      }
 		    });
 		
-		//Méthode pour choix résolution
+		//Mï¿½thode pour choix rï¿½solution
 		res_list.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Resolution>() {
 			@Override
 			public void changed(ObservableValue<? extends Resolution> observableValue, Resolution old_value, Resolution new_value) {
