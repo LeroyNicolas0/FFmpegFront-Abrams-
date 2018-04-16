@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.BorderPane?>
+
+
+<BorderPane prefHeight="124.0" prefWidth="293.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.141">
+   <center>
+      <TextArea editable="false" prefHeight="277.0" prefWidth="394.0" text="Logiciel développé dans le cadre du cours 8INF957&#10; (Programmation Orientée Objet) de l'UQAC par :&#10;&#10;- Nicolas Leroy(LERN13029600),&#10;- Francis Manzanilla(MANF24049403),&#10;- Guillaume Ryckaert(RYCG06079402).&#10;&#10;Avril 2018" BorderPane.alignment="CENTER" />
+   </center>
+</BorderPane>

@@ -270,6 +270,24 @@ public class SampleController implements Initializable{
 		}
 	}
 	
+	//Ouverture de la fenetre about
+	public void openAboutWindow() {
+		BorderPane fourthLayout;
+		try {
+			fourthLayout = FXMLLoader.load(getClass().getResource("About.fxml"));
+			Scene fourthScene = new Scene(fourthLayout, 300, 150);
+			
+			Stage fourthStage = new Stage();
+			fourthStage.setTitle("About");
+			fourthStage.setScene(fourthScene);
+			
+			fourthStage.show();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	// Ouverture de la fenetre de barre de progression 
 	  public void openProgressBarWindow() { 
 	    BorderPane secondaryLayout; 
@@ -723,7 +741,7 @@ public class SampleController implements Initializable{
 		box_video.setValue("");
 		box_extension.setItems(video_extension_list);
 		
-		//M�thode pour choix extension vid�o
+		//Methode pour choix extension video
 		box_extension.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
 	      @Override
 	      public void changed(ObservableValue<? extends Number> observableValue, Number old_value, Number new_value) {
@@ -863,7 +881,7 @@ public class SampleController implements Initializable{
 	      }
 	    });
 		
-		//M�thode pour choix codec audio
+		//Methode pour choix codec audio
 		box_audio.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
 		      @Override
 		      public void changed(ObservableValue<? extends Number> observableValue, Number old_value, Number new_value) {
@@ -879,7 +897,7 @@ public class SampleController implements Initializable{
 		      }
 		    });
 		
-		//M�thode pour choix r�solution
+		//Methode pour choix resolution
 		res_list.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Resolution>() {
 			@Override
 			public void changed(ObservableValue<? extends Resolution> observableValue, Resolution old_value, Resolution new_value) {
@@ -896,7 +914,7 @@ public class SampleController implements Initializable{
 			}
 		});
 
-		//M�thode pour choix codec video
+		//Methode pour choix codec video
 		box_video.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
 			@Override
 		      public void changed(ObservableValue<? extends Number> observableValue, Number old_value, Number new_value) {
