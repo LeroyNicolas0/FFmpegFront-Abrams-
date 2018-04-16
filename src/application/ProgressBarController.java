@@ -8,10 +8,10 @@ import java.util.ResourceBundle;
 
 import javafx.application.Platform;
 import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.stage.Stage;
 
@@ -20,6 +20,8 @@ public class ProgressBarController implements Initializable{
 	 private ProgressBar progressBar;
 	 @FXML
 	 private Button button_next;
+	 @FXML
+	 private Label value;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
