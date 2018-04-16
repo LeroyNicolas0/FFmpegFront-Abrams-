@@ -403,6 +403,7 @@ public class SampleController implements Initializable{
 			abitrate_field.setDisable(true);
 			System.out.println("No Audio");
 			box_audio.setValue(null);
+			box_video.setValue(null);
 			//box_audio.setItems(null);
 			if (Main.destination!=null) {
 				Main.destination.acodec=ACodec.NONE;
@@ -435,6 +436,7 @@ public class SampleController implements Initializable{
 			box_extension.setValue(null);
 			box_extension.setItems(audio_extension_list);
 			box_video.setValue(null);
+			box_audio.setValue(null);
 			if (Main.destination!=null) {
 				Main.destination.vcodec=VCodec.NONE;
 			}
@@ -687,8 +689,8 @@ public class SampleController implements Initializable{
 	      @Override
 	      public void changed(ObservableValue<? extends Number> observableValue, Number old_value, Number new_value) {
 	    	String option;
-	    	if (box_extension.getValue()!=null) {
-	        System.out.println(box_extension.getItems().get((Integer) new_value));
+	    	if (new_value.intValue()>-1) {
+	        System.out.println("Debug "+ box_extension.getItems().get((Integer) new_value));
 	        option = (String) box_extension.getItems().get((Integer) new_value);
 
 	        switch (option)
@@ -805,6 +807,7 @@ public class SampleController implements Initializable{
 	        	browse_subtitle.setDisable(true);
 	        	Main.destination.extension= Extension.OGA;
 		        Main.destination.acodec=null;
+		        break;
 	        case "AAC":
 	        	box_audio.setItems(FXCollections.observableArrayList(ACodec.AAC.name()));
 	        	box_audio.setValue(ACodec.AAC.name());
@@ -825,7 +828,8 @@ public class SampleController implements Initializable{
 		box_audio.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
 		      @Override
 		      public void changed(ObservableValue<? extends Number> observableValue, Number old_value, Number new_value) {
-		    	  if (!no_audio.isSelected()) {
+		    	  if (!no_audio.isSelected() && new_value.intValue()>-1) {
+		    		  System.out.println("Nv"+ new_value);
 		    	  String aud = (String) box_audio.getItems().get((Integer) new_value);
 		    	  System.out.println(box_audio.getItems().get((Integer) new_value));
 		    	  for(ACodec audio : ACodec.values()) {
@@ -857,7 +861,7 @@ public class SampleController implements Initializable{
 		box_video.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
 			@Override
 		      public void changed(ObservableValue<? extends Number> observableValue, Number old_value, Number new_value) {
-				if (box_video.getValue()!=null) {
+				if (box_video.getValue()!=null && new_value.intValue()>-1) {
 		    	  String vid = (String) box_video.getItems().get((Integer) new_value);
 		    	  System.out.println(box_video.getItems().get((Integer) new_value));
 		    	  for(VCodec video : VCodec.values()) {
