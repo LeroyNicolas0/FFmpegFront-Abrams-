@@ -72,6 +72,7 @@ public class Destination extends Source {
 			command+="-map "+ Integer.toString(i)+" ";
 		}
 		command+="-t "+Float.toString(this.duration)+" ";
+		command+="-shortest ";
 		command+="\""+this.file_path+"\" "; 
 		return command;
 	}
