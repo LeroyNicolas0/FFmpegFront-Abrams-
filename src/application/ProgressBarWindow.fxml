@@ -10,7 +10,7 @@
       <ProgressBar fx:id="progressBar" prefWidth="200.0" progress="0.0" BorderPane.alignment="CENTER" />
    </center>
    <bottom>
-      <Button fx:id="button_next" disable="true" mnemonicParsing="false" onMouseClicked="#buttonNext" text="Next" BorderPane.alignment="CENTER">
+      <Button fx:id="button_next" disable="true" mnemonicParsing="false" onMouseClicked="#buttonNext" text="Done" BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets bottom="5.0" />
          </BorderPane.margin>
