@@ -45,6 +45,7 @@ public class SampleController implements Initializable{
 			.observableArrayList();
 	ObservableList<String> video_codec_list = FXCollections
 			.observableArrayList();
+	ObservableList<String> audio_extension_list = FXCollections.observableArrayList(Extension.MP3.name(),Extension.M4A.name(),Extension.MKA.name(),Extension.OGG.name(),Extension.OGA.name(),Extension.AAC.name());
 	
 	//Bouton pour choisir le fichier video
 	@FXML
@@ -142,14 +143,16 @@ public class SampleController implements Initializable{
 	
 	@FXML
 	private TextField abitrate_field;
-	
 	@FXML 
 	private ChoiceBox<Resolution> res_list;
-	
 	@FXML
 	private TextField resolution_w;
 	@FXML
 	private TextField resolution_h;
+	@FXML
+	private CheckBox no_video;
+	@FXML 
+	private CheckBox no_audio;
 	
 	//Methode pour choisir le fichier video
 	public void ButtonBrowseVideoAction(ActionEvent event) {
@@ -203,17 +206,7 @@ public class SampleController implements Initializable{
 	
 	//M�thode pour lancer
 	public void ButtonLaunch(ActionEvent event) {
-		Main.buildFile(Main.destination.Generate_command(Main.source)); // cr�e le fichier command.bat
-		String PathToFileWrite = Main.pathTempDirectory+Main.fileCommand;
-		if(!Main.isEncoding) {
-			try {
-				Process p =  Runtime.getRuntime().exec("cmd /c command.bat", null, new File(Main.pathTempDirectory));
-			} catch (IOException e) {
-				System.out.println("bug");
-				e.printStackTrace();
-			}
-		}
-		
+		Main.buildFile(Main.destination.Generate_command(Main.source)); // cr�e le fichier command.bat		
 	}
 	
 	//Ouverture de la fenetre ajout de sous-titres
@@ -288,8 +281,7 @@ public class SampleController implements Initializable{
 	
 	//Methode pour choisir le dossier de destination
 		public void ButtonBrowserDestination(ActionEvent event) {
-			DirectoryChooser dc = new DirectoryChooser();
-								
+			DirectoryChooser dc = new DirectoryChooser();								
 			File dir = dc.showDialog(null);
 			if(dir != null) {
 					text_directory.setText(dir.getAbsolutePath());
@@ -395,6 +387,65 @@ public class SampleController implements Initializable{
 			text_bitrate.setText("");
 		}
 	}
+	// Methode pour la checkbox no_audio
+	public void checkCheckBoxno_audio() {
+		if (no_audio.isSelected()) {
+			no_video.setDisable(true);
+			browse_audio.setDisable(true);
+			box_audio.setDisable(true);
+			abitrate_slider.setDisable(true);
+			abitrate_field.setDisable(true);
+			System.out.println("No Audio");
+			box_audio.setItems(null);
+			if (Main.destination!=null) {
+				Main.destination.acodec=ACodec.NONE;
+			}
+		}else {
+			no_video.setDisable(false);
+			browse_audio.setDisable(false);
+			box_audio.setDisable(false);
+			abitrate_slider.setDisable(false);
+			abitrate_field.setDisable(false);
+			if (Main.destination!=null) {
+				Main.destination.acodec=null;
+			}
+		}
+	}
+	
+	public void checkCheckBoxno_video() {
+		System.out.println("Hello!");
+		if (no_video.isSelected()) {
+			System.out.println("Hello2!");
+			no_audio.setDisable(true);
+			System.out.println(no_audio.isDisable());
+			box_video.setDisable(true);
+			slider_crf.setVisible(false);
+			slider_bitrate.setVisible(false);
+			text_crf.setVisible(false);
+			text_bitrate.setVisible(false);
+			checkbox_crf.setVisible(false);
+			checkbox_bitrate.setVisible(false);
+			box_extension.setItems(audio_extension_list);
+			box_video.setItems(null);
+			if (Main.destination!=null) {
+				Main.destination.vcodec=VCodec.NONE;
+			}
+			}
+			else {
+				no_audio.setDisable(false);
+				box_video.setDisable(false);
+				slider_crf.setVisible(true);
+				slider_bitrate.setVisible(true);
+				text_crf.setVisible(true);
+				text_bitrate.setVisible(true);
+				checkbox_crf.setVisible(true);
+				checkbox_bitrate.setVisible(true);
+				if (Main.destination!=null) {
+					Main.destination.vcodec=null;
+				}
+				box_extension.setItems(video_extension_list);
+			}
+		}
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -629,33 +680,129 @@ public class SampleController implements Initializable{
 	    	String option;
 	        System.out.println(box_extension.getItems().get((Integer) new_value));
 	        option = (String) box_extension.getItems().get((Integer) new_value);
-        
+
 	        switch (option)
 	        {
 	        case "MP4":
+	        	box_video.setDisable(false);
+	        	box_audio.setDisable(false);
 	        	box_video.setItems(FXCollections.observableArrayList(VCodec.LIBX264.name(), VCodec.LIBX265.name(), VCodec.LIBXVID.name()));
+	        	if (!no_audio.isSelected()) {
 	        	box_audio.setItems(FXCollections.observableArrayList(ACodec.AAC.name(), ACodec.MP3LAME.name()));
+		        Main.destination.acodec=null;
+	        	}
 	        	Main.destination.extension = Extension.MP4;
+	        	subtitle_window_button.setDisable(false);
+	        	browse_subtitle.setDisable(false);
+		        Main.destination.vcodec=null;
+
 	        	break;
 	        case "GP":
+	        	box_video.setDisable(false);
 	        	box_video.setItems(FXCollections.observableArrayList(VCodec.LIBX264.name(), VCodec.LIBX265.name()));
+	        	if (!no_audio.isSelected()) {
 	        	box_audio.setItems(FXCollections.observableArrayList(ACodec.AAC.name()));
+	        	box_audio.setValue(ACodec.AAC.name());
+	        	Main.destination.acodec=ACodec.AAC;
+	        	box_audio.setDisable(true);
+	        	}
 	        	Main.destination.extension = Extension.GP;
+	        	subtitle_window_button.setDisable(false);
+	        	browse_subtitle.setDisable(false);
+		        Main.destination.vcodec=null;
 	        	break;
 	        case "G2":
-	        	box_video.setItems(FXCollections.observableArrayList(VCodec.LIBX264.name(), VCodec.LIBXVID.name()));
-		        box_audio.setItems(FXCollections.observableArrayList(ACodec.AAC.name()));
-		        Main.destination.extension = Extension.G2;
+	        	box_video.setDisable(false);
+	        	box_video.setItems(FXCollections.observableArrayList(VCodec.LIBX264.name(), VCodec.LIBX265.name()));
+	        	if (!no_audio.isSelected()) {
+	        	box_audio.setItems(FXCollections.observableArrayList(ACodec.AAC.name()));
+	        	box_audio.setValue(ACodec.AAC.name());
+	        	Main.destination.acodec=ACodec.AAC;
+	        	box_audio.setDisable(true);
+	        	}
+	        	Main.destination.extension = Extension.G2;
+	        	subtitle_window_button.setDisable(false);
+	        	browse_subtitle.setDisable(false);
+		        Main.destination.vcodec=null;
 	        	break;
 	        case "MKV":
+	        	box_video.setDisable(false);
+	        	box_audio.setDisable(false);
 	        	box_video.setItems(FXCollections.observableArrayList(VCodec.LIBX264.name(), VCodec.LIBX265.name(), VCodec.LIBXVID.name()));
+	        	if (!no_audio.isSelected()) {
 	        	box_audio.setItems(FXCollections.observableArrayList(ACodec.VORBIS.name(), ACodec.OPUS.name(), ACodec.MP3LAME.name(), ACodec.FLAC.name(), ACodec.AAC.name()));
+		        Main.destination.acodec=null;
+	        	}
 	        	Main.destination.extension = Extension.MKV;
+	        	subtitle_window_button.setDisable(false);
+	        	browse_subtitle.setDisable(false);
+		        Main.destination.vcodec=null;
 	        	break;
 	        case "AVI":
 	        	box_video.setItems(FXCollections.observableArrayList(VCodec.LIBXVID.name()));
+	        	if (!no_audio.isSelected()) {
 	        	box_audio.setItems(FXCollections.observableArrayList(ACodec.MP3LAME.name()));
+	        	box_audio.setValue(ACodec.MP3LAME.name());
+	        	box_audio.setDisable(true);
+	        	Main.destination.acodec=ACodec.MP3LAME;
+	        	}
+	        	box_video.setValue(VCodec.LIBXVID.name());
+	        	box_video.setDisable(true);
+	        	Main.destination.vcodec=VCodec.LIBXVID;
+	        	subtitle_window_button.setDisable(true);
+	        	browse_subtitle.setDisable(true);
 	        	Main.destination.extension = Extension.AVI;
+	        	break;
+	        //Audio Options
+	        case "MP3":
+	        	box_audio.setItems(FXCollections.observableArrayList(ACodec.MP3LAME.name()));
+	        	box_audio.setValue(ACodec.MP3LAME.name());
+	        	box_audio.setDisable(true);
+	        	subtitle_window_button.setDisable(true);
+	        	browse_subtitle.setDisable(true);
+	        	Main.destination.extension= Extension.MP3;
+	        	Main.destination.acodec=ACodec.MP3LAME;
+	        	break;
+	        case "M4A":
+	        	box_audio.setDisable(false);
+	        	box_audio.setItems(FXCollections.observableArrayList(ACodec.AAC.name(),ACodec.MP3LAME.name()));
+	        	subtitle_window_button.setDisable(true);
+	        	browse_subtitle.setDisable(true);
+	        	Main.destination.extension= Extension.M4A;
+		        Main.destination.acodec=null;
+	        	break;
+	        case "MKA":
+	        	box_audio.setDisable(false);
+	        	box_audio.setItems(FXCollections.observableArrayList(ACodec.AAC.name(),ACodec.MP3LAME.name(),ACodec.VORBIS.name(),ACodec.OPUS.name(),ACodec.FLAC.name()));
+	        	subtitle_window_button.setDisable(true);
+	        	browse_subtitle.setDisable(true);
+	        	Main.destination.extension= Extension.MKA;
+		        Main.destination.acodec=null;
+	        	break;
+	        case "OGG":
+	        	box_audio.setItems(FXCollections.observableArrayList(ACodec.VORBIS.name()));
+	        	subtitle_window_button.setDisable(true);
+	        	browse_subtitle.setDisable(true);
+	        	box_audio.setValue(ACodec.VORBIS.name());
+	        	box_audio.setDisable(true);
+	        	Main.destination.acodec=ACodec.VORBIS;
+	        	Main.destination.extension= Extension.OGG;
+	        	break;
+	        case "OGA":
+	        	box_audio.setDisable(false);
+	        	box_audio.setItems(FXCollections.observableArrayList(ACodec.OPUS.name(),ACodec.FLAC.name()));
+	        	subtitle_window_button.setDisable(true);
+	        	browse_subtitle.setDisable(true);
+	        	Main.destination.extension= Extension.OGA;
+		        Main.destination.acodec=null;
+	        case "AAC":
+	        	box_audio.setItems(FXCollections.observableArrayList(ACodec.AAC.name()));
+	        	box_audio.setValue(ACodec.AAC.name());
+	        	box_audio.setDisable(true);
+	        	subtitle_window_button.setDisable(true);
+	        	browse_subtitle.setDisable(true);
+	        	Main.destination.extension= Extension.AAC;
+	        	Main.destination.acodec=ACodec.AAC;
 	        	break;
 	        default:
 	        	break;
