@@ -204,9 +204,10 @@ public class SampleController implements Initializable{
 		}		
 	}
 	
-	//M�thode pour lancer
+	//Methode pour lancer
 	public void ButtonLaunch(ActionEvent event) {
-		Main.buildFile(Main.destination.Generate_command(Main.source)); // cr�e le fichier command.bat		
+		Main.storeSubs(Main.subListObs);
+		Main.buildFile(Main.destination.Generate_command(Main.source)); // cree le fichier command.bat		
 	}
 	
 	//Ouverture de la fenetre ajout de sous-titres

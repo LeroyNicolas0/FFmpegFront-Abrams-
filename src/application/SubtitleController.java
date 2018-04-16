@@ -22,9 +22,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 
 public class SubtitleController implements Initializable{
-	//Liste de sous titre
-	//private ArrayList<SubEntry> subList=new ArrayList<SubEntry>();
-	private ObservableList<SubEntry> subListObs;
 	
 	//Donnees necessaires a une ligne de sous titre
 	private int number=1;
@@ -60,8 +57,10 @@ public class SubtitleController implements Initializable{
     private TableColumn<SubEntry, String> column_text;
 	 
 	 public void initialize(URL arg0, ResourceBundle arg1) {
-		 subListObs= FXCollections.observableArrayList();
-		 tableview_subtitle.setItems(subListObs);
+		 if(Main.subListObs==null) {
+			 Main.subListObs= FXCollections.observableArrayList();
+		 }
+		 tableview_subtitle.setItems(Main.subListObs);
 		 column_number.setCellValueFactory(new PropertyValueFactory<SubEntry, Integer>("Number"));
 		 column_start.setCellValueFactory(new PropertyValueFactory<SubEntry, String>("Start"));
 		 column_end.setCellValueFactory(new PropertyValueFactory<SubEntry, String>("End"));
@@ -84,7 +83,7 @@ public class SubtitleController implements Initializable{
 					label_slider_subtitle.setText(String.valueOf(valueSlider) + "%");
 				}
 				end=(int)duration_spinner.getValue()+start;
-				label_subtitle_duration.setText("Subtitle no " + (subListObs.size()+1) + " duration");
+				label_subtitle_duration.setText("Subtitle no " + (Main.subListObs.size()+1) + " duration");
 				button_remove.setDisable(true);
 				label_remove.setDisable(true);
 			}
@@ -100,7 +99,7 @@ public class SubtitleController implements Initializable{
 				else {
 					text="";
 				}
-				label_subtitle_duration.setText("Subtitle no " + (subListObs.size()+1) + " duration");
+				label_subtitle_duration.setText("Subtitle no " + (Main.subListObs.size()+1) + " duration");
 				button_remove.setDisable(true);
 				label_remove.setDisable(true);
 			}
@@ -124,42 +123,42 @@ public class SubtitleController implements Initializable{
 				}
 				button_remove.setDisable(true);
 				label_remove.setDisable(true);
-				label_subtitle_duration.setText("Subtitle no " + (subListObs.size()+1) + " duration");
+				label_subtitle_duration.setText("Subtitle no " + (Main.subListObs.size()+1) + " duration");
 			}	
 		});
 	 }
 	 
 	 public void buttonAdd() { 
-		SubEntry addedSE= new SubEntry (subListObs.size()+1,start,end,text);
-		for (int i=0;i<subListObs.size();i++)
+		SubEntry addedSE= new SubEntry (Main.subListObs.size()+1,start,end,text);
+		for (int i=0;i<Main.subListObs.size();i++)
 		{
 			int tmp_number;
-			if (subListObs.get(i).seconds>addedSE.seconds)
+			if (Main.subListObs.get(i).seconds>addedSE.seconds)
 			{
-				tmp_number=subListObs.get(i).number;
-				subListObs.get(i).number=addedSE.number;
+				tmp_number=Main.subListObs.get(i).number;
+				Main.subListObs.get(i).number=addedSE.number;
 				addedSE.number=tmp_number;
-				SubEntry tmpSE =subListObs.set(i, addedSE);
+				SubEntry tmpSE =Main.subListObs.set(i, addedSE);
 				addedSE=tmpSE;
 			}	
 		}	
-		subListObs.add(addedSE);
-		label_subtitle_duration.setText("Subtitle no " + (subListObs.size()+1) + " duration");
+		Main.subListObs.add(addedSE);
+		label_subtitle_duration.setText("Subtitle no " + (Main.subListObs.size()+1) + " duration");
 		button_remove.setDisable(true);
 		label_remove.setDisable(true);
 	 }
 	 
 	 public void buttonRemove() { 
 		int id=number-1;
-		subListObs.remove(id);
-		for (int i=id;i<this.subListObs.size();i++)
+		Main.subListObs.remove(id);
+		for (int i=id;i<Main.subListObs.size();i++)
 		{
-			subListObs.get(i).setNumber(i+1);
+			Main.subListObs.get(i).setNumber(i+1);
 		}
-		label_subtitle_duration.setText("Subtitle no " + (subListObs.size()+1) + " duration");
+		label_subtitle_duration.setText("Subtitle no " + (Main.subListObs.size()+1) + " duration");
 		button_remove.setDisable(true);
 		label_remove.setDisable(true);
-		System.out.println("hue hue " + subListObs.size());
+		System.out.println("hue hue " + Main.subListObs.size());
 	 }
 	 
 	 public void selectRow(MouseEvent me) {
@@ -178,5 +177,9 @@ public class SubtitleController implements Initializable{
 		 button_remove.setDisable(false);
 		 label_remove.setDisable(false);
 		 label_remove.setText("Subtitle no " + number);
+	 }
+	 
+	 public void buttonDone() {
+		 
 	 }
 }
