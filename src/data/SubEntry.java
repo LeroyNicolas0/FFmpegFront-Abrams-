@@ -62,4 +62,10 @@ public class SubEntry {
 	public void setSeconds(int seconds) {
 		this.seconds = seconds;
 	}
+	
+	public int getEndTimeInt() {
+		String min=end.substring(0,2);
+		String sec=end.substring(4, end.length());
+		return Integer.valueOf(min)*60+Integer.valueOf(sec);
+	}
 }

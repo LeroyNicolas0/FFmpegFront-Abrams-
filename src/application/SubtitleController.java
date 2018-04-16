@@ -1,7 +1,6 @@
 package application;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import data.SubEntry;
@@ -11,6 +10,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Spinner;
@@ -19,6 +19,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 
 public class SubtitleController implements Initializable{
 	//Liste de sous titre
@@ -39,6 +40,12 @@ public class SubtitleController implements Initializable{
 	private TextField text_subtitle;
 	@FXML
     private Spinner duration_spinner;
+	@FXML
+    private Label label_subtitle_duration;
+	@FXML
+    private Button button_remove;
+	@FXML
+    private Label label_remove;
 	
 	//Tableau affichage
 	@FXML
@@ -77,6 +84,9 @@ public class SubtitleController implements Initializable{
 					label_slider_subtitle.setText(String.valueOf(valueSlider) + "%");
 				}
 				end=(int)duration_spinner.getValue()+start;
+				label_subtitle_duration.setText("Subtitle no " + (subListObs.size()+1) + " duration");
+				button_remove.setDisable(true);
+				label_remove.setDisable(true);
 			}
 		});
 		
@@ -90,6 +100,9 @@ public class SubtitleController implements Initializable{
 				else {
 					text="";
 				}
+				label_subtitle_duration.setText("Subtitle no " + (subListObs.size()+1) + " duration");
+				button_remove.setDisable(true);
+				label_remove.setDisable(true);
 			}
 		});
 		
@@ -109,7 +122,10 @@ public class SubtitleController implements Initializable{
 				if(Main.destination!=null) {
 						end=(int)duration_spinner.getValue()+start;
 				}
-			}
+				button_remove.setDisable(true);
+				label_remove.setDisable(true);
+				label_subtitle_duration.setText("Subtitle no " + (subListObs.size()+1) + " duration");
+			}	
 		});
 	 }
 	 
@@ -126,13 +142,41 @@ public class SubtitleController implements Initializable{
 				SubEntry tmpSE =subListObs.set(i, addedSE);
 				addedSE=tmpSE;
 			}	
-		}
+		}	
 		subListObs.add(addedSE);
-		System.out.println("plip "+subListObs.size());
-		//subListObs = FXCollections.observableArrayList(subList);
-		//tableview_subtitle.getItems().setAll(subListObs);
-//		for (SubEntry subEntry : subList) {
-//			tableview_subtitle.getItems().add(subEntry);
-//		}
+		label_subtitle_duration.setText("Subtitle no " + (subListObs.size()+1) + " duration");
+		button_remove.setDisable(true);
+		label_remove.setDisable(true);
+	 }
+	 
+	 public void buttonRemove() { 
+		int id=number-1;
+		subListObs.remove(id);
+		for (int i=id;i<this.subListObs.size();i++)
+		{
+			subListObs.get(i).setNumber(i+1);
+		}
+		label_subtitle_duration.setText("Subtitle no " + (subListObs.size()+1) + " duration");
+		button_remove.setDisable(true);
+		label_remove.setDisable(true);
+		System.out.println("hue hue " + subListObs.size());
+	 }
+	 
+	 public void selectRow(MouseEvent me) {
+		 number=tableview_subtitle.getSelectionModel().getSelectedItem().getNumber();
+		 //label_subtitle_duration.setText("Subtitle no " + (number) + " duration");
+		 
+		 start=tableview_subtitle.getSelectionModel().getSelectedItem().getSeconds();
+		 end=tableview_subtitle.getSelectionModel().getSelectedItem().getEndTimeInt();
+		 //duration_spinner.setAccessibleText(String.valueOf(end-start));
+		 //label_slider_subtitle.setText(Main.timeToString((float)end));
+		 //and set slider?
+		 
+		 text=tableview_subtitle.getSelectionModel().getSelectedItem().getText();
+		 //text_subtitle.setText(text);
+		 
+		 button_remove.setDisable(false);
+		 label_remove.setDisable(false);
+		 label_remove.setText("Subtitle no " + number);
 	 }
 }

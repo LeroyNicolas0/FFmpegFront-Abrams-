@@ -48,7 +48,7 @@
                         </HBox>
                         <HBox spacing="5.0">
                            <children>
-                              <Label text="Subtitle text">
+                              <Label prefHeight="26.0" prefWidth="64.0" text="Subtitle text">
                                  <HBox.margin>
                                     <Insets right="5.0" />
                                  </HBox.margin>
@@ -61,7 +61,7 @@
                         </HBox>
                         <HBox spacing="5.0">
                            <children>
-                              <Label fx:id="label_subtitle_duration" text="Subtitles no 1 duration">
+                              <Label fx:id="label_subtitle_duration" prefHeight="24.0" prefWidth="116.0" text="Subtitle no 1 duration">
                                  <HBox.margin>
                                     <Insets />
                                  </HBox.margin></Label>
@@ -82,7 +82,19 @@
                                     <Insets left="10.0" />
                                  </HBox.margin>
                               </Button>
-                              <Button disable="true" mnemonicParsing="false" text="Remove">
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="10.0" left="5.0" top="10.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox spacing="5.0">
+                           <children>
+                              <Label fx:id="label_remove" alignment="CENTER" contentDisplay="CENTER" disable="true" prefHeight="25.0" prefWidth="68.0" text="Subtitle no 1">
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </Label>
+                              <Button fx:id="button_remove" disable="true" mnemonicParsing="false" onMouseClicked="#buttonRemove" text="Remove">
                                  <HBox.margin>
                                     <Insets left="3.0" />
                                  </HBox.margin>
@@ -102,7 +114,7 @@
             </AnchorPane>
           <AnchorPane maxWidth="500.0" minHeight="0.0" minWidth="0.0" prefWidth="500.0">
                <children>
-                  <TableView fx:id="tableview_subtitle" prefWidth="500.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <TableView fx:id="tableview_subtitle" onMousePressed="#selectRow" prefWidth="500.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <columns>
                       <TableColumn fx:id="column_number" maxWidth="1000.0" prefWidth="60.0" text="Number" />
                       <TableColumn fx:id="column_start" maxWidth="1500.0" prefWidth="75.0" text="Start" />
