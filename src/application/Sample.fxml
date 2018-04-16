@@ -250,8 +250,8 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <CheckBox alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="21.0" prefWidth="316.0" text="No Video" GridPane.columnIndex="1" />
-                  <CheckBox alignment="CENTER" mnemonicParsing="false" prefHeight="21.0" prefWidth="111.0" text="No Audio" GridPane.columnIndex="3" />
+                  <CheckBox fx:id="no_video" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#checkCheckBoxno_video" prefHeight="21.0" prefWidth="316.0" text="No Video" GridPane.columnIndex="1" />
+                  <CheckBox fx:id="no_audio" alignment="CENTER" mnemonicParsing="false" onAction="#checkCheckBoxno_audio" prefHeight="21.0" prefWidth="111.0" text="No Audio" GridPane.columnIndex="3" />
                </children>
             </GridPane>
          </children>
