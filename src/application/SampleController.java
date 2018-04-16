@@ -278,8 +278,7 @@ public class SampleController implements Initializable{
 	
 	//Methode pour choisir le dossier de destination
 		public void ButtonBrowserDestination(ActionEvent event) {
-			DirectoryChooser dc = new DirectoryChooser();
-								
+			DirectoryChooser dc = new DirectoryChooser();								
 			File dir = dc.showDialog(null);
 			if(dir != null) {
 					text_directory.setText(dir.getAbsolutePath());
