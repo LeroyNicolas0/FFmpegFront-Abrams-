@@ -197,6 +197,7 @@ public class SampleController implements Initializable{
 			} else {
 				res_list.getItems().addAll(Resolution.get_360p(),Resolution.get_480p(),Resolution.get_720p(),Resolution.get_1080p(),Resolution.get_custom());			
 			}
+			abitrate_slider.setValue(320);
 		}
 		else {
 			System.out.println("the file is not a video");
