@@ -155,6 +155,24 @@ public class SampleController implements Initializable{
 	@FXML 
 	private CheckBox no_audio;
 	
+	//Gridpane
+	@FXML
+    private GridPane grid_output;
+	@FXML
+    private GridPane grid_subtitle;
+	@FXML
+    private GridPane grid_codec;
+	@FXML
+    private GridPane grid_audio_bitrate;
+	@FXML
+    private GridPane grid_resolution;
+	@FXML
+    private GridPane grid_no;
+	@FXML
+    private GridPane grid_add_audio;
+	@FXML
+    private GridPane grid_video_quality;
+	
 	//Methode pour choisir le fichier video
 	public void ButtonBrowseVideoAction(ActionEvent event) {
 		FileChooser fc = new FileChooser();
@@ -176,8 +194,19 @@ public class SampleController implements Initializable{
 			//on met a jour le bitrate propos�
 			slider_bitrate.setValue(Main.destination.resolution.width*Main.destination.resolution.height*60/10000);
 			text_bitrate.setText(String.valueOf(Main.destination.resolution.width*Main.destination.resolution.height*60/10000));
+			
+			//On unable les zones de la fenetre
+			grid_output.setDisable(false);
+			grid_add_audio.setDisable(false);
+			grid_subtitle.setDisable(false);
+			grid_codec.setDisable(false);
+			grid_audio_bitrate.setDisable(false);
+			grid_video_quality.setVisible(true);
+			grid_resolution.setDisable(false);
+			grid_no.setDisable(false);
 			checkbox_cut_video.setDisable(false);
 			subtitle_window_button.setDisable(false);
+			launch.setDisable(false);
 
 			res_list.setConverter(new StringConverter<Resolution>(){
 				@Override
@@ -437,6 +466,7 @@ public class SampleController implements Initializable{
 			box_extension.setItems(audio_extension_list);
 			box_video.setValue(null);
 			box_audio.setValue(null);
+			grid_resolution.setDisable(true);
 			if (Main.destination!=null) {
 				Main.destination.vcodec=VCodec.NONE;
 			}
@@ -450,6 +480,7 @@ public class SampleController implements Initializable{
 				text_bitrate.setVisible(true);
 				checkbox_crf.setVisible(true);
 				checkbox_bitrate.setVisible(true);
+				grid_resolution.setDisable(false);
 				if (Main.destination!=null) {
 					Main.destination.vcodec=null;
 				}
