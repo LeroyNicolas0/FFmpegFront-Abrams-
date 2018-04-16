@@ -30,6 +30,9 @@ public class Resolution {
 	public static Resolution get_1080p() {
 		return new Resolution(1920,1080);
 	}
+	public static Resolution get_custom() {
+		return new Resolution(0,0);
+	}
 	public boolean is_16_9() {
 		if (1.777<(float)width/(float)height && (float)width/(float)height <1.78) {
 			return true;

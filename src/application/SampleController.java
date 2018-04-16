@@ -178,7 +178,10 @@ public class SampleController implements Initializable{
 			res_list.setConverter(new StringConverter<Resolution>(){
 				@Override
 				public String toString(Resolution r) {
-					return r.print();
+					if (r.width==0) {
+						return ("Custom");
+					}
+					else return r.print();
 				}	
 				@Override
 				public Resolution fromString(String string) {
@@ -186,9 +189,9 @@ public class SampleController implements Initializable{
 				}
 			});
 			if (!Main.source.resolution.is_16_9()) {
-				res_list.getItems().addAll(Main.source.resolution.get_360p_ratio(),Main.source.resolution.get_480p_ratio(),Main.source.resolution.get_720p_ratio(),Main.source.resolution.get_1080p_ratio());
+				res_list.getItems().addAll(Main.source.resolution.get_360p_ratio(),Main.source.resolution.get_480p_ratio(),Main.source.resolution.get_720p_ratio(),Main.source.resolution.get_1080p_ratio(),Resolution.get_custom());
 			} else {
-				res_list.getItems().addAll(Resolution.get_360p(),Resolution.get_480p(),Resolution.get_720p(),Resolution.get_1080p());			
+				res_list.getItems().addAll(Resolution.get_360p(),Resolution.get_480p(),Resolution.get_720p(),Resolution.get_1080p(),Resolution.get_custom());			
 			}
 		}
 		else {
@@ -533,6 +536,62 @@ public class SampleController implements Initializable{
 			};
 			abitrate_field.focusedProperty().addListener(abitrate_listener);
 			
+			//Methode pour le textfield resolution_w
+			
+			ChangeListener<? super Boolean> w_listener=new ChangeListener<Boolean>() {
+				@Override
+				public void changed(ObservableValue<? extends Boolean> arg0, Boolean arg1, Boolean arg2) {
+					if(resolution_w.getText()!=null ) {
+						Pattern pattern = Pattern.compile("\\d+");
+						Matcher matcher = pattern.matcher(resolution_w.getText());
+						if (matcher.find()) {
+							int value_w=Integer.parseInt(matcher.group(0));
+							if (value_w<64) {
+								value_w=64;
+							}
+							if (value_w%2!=0) {
+								value_w++;
+							}
+							resolution_w.setText(Integer.toString(value_w));
+							Matcher matcher2 = pattern.matcher(resolution_h.getText());
+							if (matcher.find() && Main.destination!=null) {
+								int value_h=Integer.parseInt(matcher.group(0));
+								Main.destination.resolution=new Resolution(value_w,value_h);	
+								}		
+							}
+						}
+					}		
+				};
+				resolution_w.focusedProperty().addListener(w_listener);
+				
+				//Methode pour le textfield resolution_h
+				
+				ChangeListener<? super Boolean> h_listener=new ChangeListener<Boolean>() {
+					@Override
+					public void changed(ObservableValue<? extends Boolean> arg0, Boolean arg1, Boolean arg2) {
+						if(resolution_h.getText()!=null ) {
+							Pattern pattern = Pattern.compile("\\d+");
+							Matcher matcher = pattern.matcher(resolution_h.getText());
+							if (matcher.find()) {
+								int value_h=Integer.parseInt(matcher.group(0));
+								if (value_h<64) {
+									value_h=64;
+								}
+								if (value_h%2!=2) {
+									value_h++;
+								}
+								resolution_h.setText(Integer.toString(value_h));
+								Matcher matcher2 = pattern.matcher(resolution_w.getText());
+								if (matcher.find() && Main.destination!=null) {
+									int value_w=Integer.parseInt(matcher.group(0));
+									Main.destination.resolution=new Resolution(value_w,value_h);	
+									}		
+								}
+							}
+						}		
+					};
+					resolution_h.focusedProperty().addListener(h_listener);
+			
 		text_name.textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> arg0, String arg1, String arg2) {
@@ -604,8 +663,16 @@ public class SampleController implements Initializable{
 		res_list.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Resolution>() {
 			@Override
 			public void changed(ObservableValue<? extends Resolution> observableValue, Resolution old_value, Resolution new_value) {
+				if (new_value.width!=0) {
 				resolution_w.setText(Integer.toString(new_value.width));
 				resolution_h.setText(Integer.toString(new_value.height));
+				Main.destination.resolution=new_value;
+				resolution_w.setDisable(true);
+				resolution_h.setDisable(true);
+				}else {
+				resolution_w.setDisable(false);
+				resolution_h.setDisable(false);
+				}
 			}
 		});
 
