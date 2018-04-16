@@ -12,10 +12,11 @@ public class Destination extends Source {
 		extension=null;
 		acodec=null;
 		vcodec=null;
-		String r=new String (name.substring(0, name.lastIndexOf(("."))));
-		name= r+"(1)";
-		r=new String (file_path.substring(0,file_path.lastIndexOf("\\")));
-		file_path= r+ name;
+		String r=new String (name.substring(file_path.lastIndexOf("\\")+1, name.lastIndexOf(("."))));
+		r+="(1)";
+		name=r;
+		file_path=new String (file_path.substring(0,file_path.lastIndexOf("\\")));
+		file_path+="\\"+ name;
 		use_crf=false;
 		crf=51.0f;
 	}

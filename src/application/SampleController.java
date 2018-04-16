@@ -657,7 +657,7 @@ public class SampleController implements Initializable{
 								if (value_h<64) {
 									value_h=64;
 								}
-								if (value_h%2!=2) {
+								if (value_h%2!=0) {
 									value_h++;
 								}
 								resolution_h.setText(Integer.toString(value_h));
