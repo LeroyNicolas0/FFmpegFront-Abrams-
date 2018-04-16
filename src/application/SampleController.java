@@ -634,9 +634,10 @@ public class SampleController implements Initializable{
 							}
 							resolution_w.setText(Integer.toString(value_w));
 							Matcher matcher2 = pattern.matcher(resolution_h.getText());
-							if (matcher.find() && Main.destination!=null) {
+							if (matcher2.find() && Main.destination!=null) {
 								int value_h=Integer.parseInt(matcher.group(0));
 								Main.destination.resolution=new Resolution(value_w,value_h);	
+								System.out.println(Main.destination.resolution.print());
 								}		
 							}
 						}
@@ -657,14 +658,16 @@ public class SampleController implements Initializable{
 								if (value_h<64) {
 									value_h=64;
 								}
-								if (value_h%2!=2) {
+								if (value_h%2!=0) {
 									value_h++;
 								}
 								resolution_h.setText(Integer.toString(value_h));
 								Matcher matcher2 = pattern.matcher(resolution_w.getText());
-								if (matcher.find() && Main.destination!=null) {
+								System.out.println(resolution_w.getText());
+								if (matcher2.find() && Main.destination!=null) {
 									int value_w=Integer.parseInt(matcher.group(0));
-									Main.destination.resolution=new Resolution(value_w,value_h);	
+									Main.destination.resolution=new Resolution(value_w,value_h);
+									System.out.println(Main.destination.resolution.print());
 									}		
 								}
 							}
