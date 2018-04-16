@@ -104,7 +104,7 @@
                               <Insets bottom="10.0" left="5.0" top="10.0" />
                            </VBox.margin>
                         </HBox>
-                        <Button mnemonicParsing="false" onMouseClicked="#buttonDone" text="Done" textAlignment="CENTER">
+                        <Button fx:id="button_done" mnemonicParsing="false" onMouseClicked="#buttonDone" text="Done" textAlignment="CENTER">
                            <VBox.margin>
                               <Insets left="160.0" top="20.0" />
                            </VBox.margin>

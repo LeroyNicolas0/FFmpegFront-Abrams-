@@ -3,11 +3,14 @@ package application;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import com.sun.corba.se.pept.transport.EventHandler;
+
 import data.SubEntry;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -20,6 +23,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 
 public class SubtitleController implements Initializable{
 	
@@ -43,6 +47,8 @@ public class SubtitleController implements Initializable{
     private Button button_remove;
 	@FXML
     private Label label_remove;
+	@FXML
+    private Button button_done;
 	
 	//Tableau affichage
 	@FXML
@@ -158,7 +164,6 @@ public class SubtitleController implements Initializable{
 		label_subtitle_duration.setText("Subtitle no " + (Main.subListObs.size()+1) + " duration");
 		button_remove.setDisable(true);
 		label_remove.setDisable(true);
-		System.out.println("hue hue " + Main.subListObs.size());
 	 }
 	 
 	 public void selectRow(MouseEvent me) {
@@ -180,6 +185,7 @@ public class SubtitleController implements Initializable{
 	 }
 	 
 	 public void buttonDone() {
-		 
-	 }
+		 Stage stage = (Stage) button_done.getScene().getWindow();
+		 stage.close();
+	}
 }
