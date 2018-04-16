@@ -205,17 +205,7 @@ public class SampleController implements Initializable{
 	
 	//M�thode pour lancer
 	public void ButtonLaunch(ActionEvent event) {
-		Main.buildFile(Main.destination.Generate_command(Main.source)); // cr�e le fichier command.bat
-		String PathToFileWrite = Main.pathTempDirectory+Main.fileCommand;
-		if(!Main.isEncoding) {
-			try {
-				Process p =  Runtime.getRuntime().exec("cmd /c command.bat", null, new File(Main.pathTempDirectory));
-			} catch (IOException e) {
-				System.out.println("bug");
-				e.printStackTrace();
-			}
-		}
-		
+		Main.buildFile(Main.destination.Generate_command(Main.source)); // cr�e le fichier command.bat		
 	}
 	
 	//Ouverture de la fenetre ajout de sous-titres
@@ -290,8 +280,7 @@ public class SampleController implements Initializable{
 	
 	//Methode pour choisir le dossier de destination
 		public void ButtonBrowserDestination(ActionEvent event) {
-			DirectoryChooser dc = new DirectoryChooser();
-								
+			DirectoryChooser dc = new DirectoryChooser();								
 			File dir = dc.showDialog(null);
 			if(dir != null) {
 					text_directory.setText(dir.getAbsolutePath());

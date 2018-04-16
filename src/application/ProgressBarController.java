@@ -46,13 +46,6 @@ public class ProgressBarController implements Initializable{
 						System.out.println("bug");
 						e.printStackTrace();
 					}
-					Platform.runLater(
-						    new Runnable() {
-						        public void run() {
-						        	System.exit(0);
-						        }
-						    }
-						);
 					return null;
 				 }
 				 
