@@ -3,11 +3,15 @@ package application;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
+import java.io.Console;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 import java.util.zip.Adler32;
@@ -162,18 +166,20 @@ public class Main extends Application {
 	}
 	
 	public static void storeSubs( ObservableList<SubEntry> subList) {
-		try{
-			File subFile=new File(Main.pathTempDirectory+"sub.srt");
-
-    	    BufferedWriter bw = new BufferedWriter(new FileWriter(subFile));
-    	    for (SubEntry subEntry : subList) {
-        	    bw.write(subEntry.send());
-			} 	    
-    	    bw.close(); 		
-    	    
-    	    System.out.println("Done");	
-    	}catch(IOException e){
-    	    e.printStackTrace();		
-    	}
+		File subFile=new File(Main.pathTempDirectory+"sub.srt");
+		try {
+			PrintWriter out =new PrintWriter (subFile,"UTF-8");//We encode the file in UTF-8, so we can support lots of characters
+			for (SubEntry subEntry : subList) {
+        	    out.println(subEntry.send());
+			}
+			out.close();//close File
+			System.out.println("Done");	
+		} catch (FileNotFoundException e)
+		{	
+			System.out.println("Error with subtitles");
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
 	}
 }

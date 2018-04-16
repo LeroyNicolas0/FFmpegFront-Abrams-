@@ -206,7 +206,9 @@ public class SampleController implements Initializable{
 	
 	//Methode pour lancer
 	public void ButtonLaunch(ActionEvent event) {
-		Main.storeSubs(Main.subListObs);
+		if(Main.subListObs!=null && Main.subListObs.size()!=0) {
+			Main.storeSubs(Main.subListObs);
+		}	
 		Main.buildFile(Main.destination.Generate_command(Main.source)); // cree le fichier command.bat		
 	}
 	
