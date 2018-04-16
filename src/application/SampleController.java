@@ -142,14 +142,16 @@ public class SampleController implements Initializable{
 	
 	@FXML
 	private TextField abitrate_field;
-	
 	@FXML 
 	private ChoiceBox<Resolution> res_list;
-	
 	@FXML
 	private TextField resolution_w;
 	@FXML
 	private TextField resolution_h;
+	@FXML
+	private CheckBox no_video;
+	@FXML 
+	private CheckBox no_audio;
 	
 	//Methode pour choisir le fichier video
 	public void ButtonBrowseVideoAction(ActionEvent event) {
@@ -393,6 +395,63 @@ public class SampleController implements Initializable{
 			slider_bitrate.setDisable(true);
 			text_bitrate.setDisable(true);
 			text_bitrate.setText("");
+		}
+	}
+	// Methode pour la checkbox no_audio
+	public void checkCheckBoxno_audio() {
+		if (no_audio.isSelected()) {
+			no_video.setDisable(true);
+			browse_audio.setDisable(true);
+			box_audio.setDisable(true);
+			abitrate_slider.setDisable(true);
+			abitrate_field.setDisable(true);
+			System.out.println("No Audio");
+			if (Main.destination!=null) {
+				Main.destination.acodec=ACodec.NONE;
+			}
+		}else {
+			no_video.setDisable(false);
+			browse_audio.setDisable(false);
+			box_audio.setDisable(false);
+			abitrate_slider.setDisable(false);
+			abitrate_field.setDisable(false);
+			if (Main.destination!=null) {
+				Main.destination.acodec=null;
+			}
+		}
+	}
+	
+	public void checkCheckBoxno_video() {
+		System.out.println("Hello!");
+		if (no_video.isSelected()) {
+			System.out.println("Hello2!");
+			no_audio.setDisable(true);
+			System.out.println(no_audio.isDisable());
+			box_video.setDisable(true);
+			slider_crf.setVisible(false);
+			slider_bitrate.setVisible(false);
+			text_crf.setVisible(false);
+			text_bitrate.setVisible(false);
+			checkbox_crf.setVisible(false);
+			checkbox_bitrate.setVisible(false);
+			//TODO Changer les Extensions disponibles en extensions audio.
+			if (Main.destination!=null) {
+				Main.destination.vcodec=VCodec.NONE;
+			}
+			else {
+				no_audio.setDisable(false);
+				box_video.setDisable(false);
+				slider_crf.setVisible(true);
+				slider_bitrate.setVisible(true);
+				text_crf.setVisible(true);
+				text_bitrate.setVisible(true);
+				checkbox_crf.setVisible(true);
+				checkbox_bitrate.setVisible(true);
+				if (Main.destination!=null) {
+					Main.destination.vcodec=null;
+				}
+				//TODO Changer les Extensions disponibles en extensions video
+			}
 		}
 	}
 	
