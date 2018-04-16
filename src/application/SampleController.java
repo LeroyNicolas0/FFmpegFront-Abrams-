@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 import Enums.ACodec;
 import Enums.Extension;
 import Enums.VCodec;
+import data.AudioTrack;
 import data.Destination;
 import data.Resolution;
 import data.Source;
@@ -255,6 +256,7 @@ public class SampleController implements Initializable{
 		if(audio != null) {
 			for(int i = 0; i < audio.size();i++) {
 			view_sub.getItems().add(audio.get(i).getAbsolutePath());
+			Main.destination.pistes_audio.add(new AudioTrack(audio.get(i).getAbsolutePath()));
 			}
 		}
 		else {

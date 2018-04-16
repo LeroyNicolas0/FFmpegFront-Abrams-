@@ -16,6 +16,12 @@ public class AudioTrack {
 		this.track_number=n;
 		this.stream_number=n2;
 	}
+	public AudioTrack(String file) {
+		this.file=file;
+		this.track_name="und";
+		this.track_number=0;
+		this.stream_number=0;
+	}
 	
 	public String Print() {
 		return new String("Track number:"+ Integer.toString(track_number) +"---" + track_name + "  in "+ file  );
