@@ -195,7 +195,7 @@ public class SampleController implements Initializable{
 			//on met a jour la destination
 			Main.destination=new Destination(Main.source);
 			Main.destination.end_cut=Main.source.duration;
-			//on met a jour le bitrate propos�
+			//on met a jour le bitrate propose
 			slider_bitrate.setValue(Main.destination.resolution.width*Main.destination.resolution.height*60/10000);
 			text_bitrate.setText(String.valueOf(Main.destination.resolution.width*Main.destination.resolution.height*60/10000));
 			
