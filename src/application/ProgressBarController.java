@@ -8,13 +8,18 @@ import java.util.ResourceBundle;
 
 import javafx.application.Platform;
 import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
+import javafx.stage.Stage;
 
 public class ProgressBarController implements Initializable{
 	 @FXML
 	 private ProgressBar progressBar;
+	 @FXML
+	 private Button button_next;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -41,23 +46,33 @@ public class ProgressBarController implements Initializable{
 								System.out.println(time/Main.destination.duration*100);
 							}
 						}
-						}
-						catch (IOException e) {
+						System.out.println("testitestu");
+					}
+					catch (IOException e) {
 						System.out.println("bug");
 						e.printStackTrace();
 					}
+					Platform.runLater(
+					    new Runnable() {
+					        public void run() {
+					        	button_next.setDisable(false);
+					        }
+					    }
+					);
 					return null;
 				 }
-				 
 		 	};
+		 	
 		 	new Thread(task).start();
-		 		progressBar.progressProperty().bind(task.progressProperty());
-		 			
-			}
-			else
-				System.out.println("Already encoding");
-		 
+	 		progressBar.progressProperty().bind(task.progressProperty());		 			
+		}
+		else
+			System.out.println("Already encoding");
 	 }
-		
+	
+	public void buttonNext() {
+		Stage stage = (Stage) button_next.getScene().getWindow();
+		stage.close();
 	}
+}
 	 
