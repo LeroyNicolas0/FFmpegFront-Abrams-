@@ -9,9 +9,10 @@ Développé dans le cadre du cours 8INF957 (Programmation Orientée Objet) de l'
 
 Une interface pour FFmpeg en JAVA.
 
+Un manuel est disponible dans le dossier manual
 ## Fonctionnalités :
 - Changement de codec/Conteneur
-- Changement de résolution/bitrate(vérif qualité)
+- Changement de résolution/bitrate
 - Ajout de sous-titres existants
 - Création de sous-titres (fichier .srt)
 - Couper début/fin
