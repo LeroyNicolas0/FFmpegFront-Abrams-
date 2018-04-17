@@ -232,6 +232,7 @@ public class SampleController implements Initializable{
 				res_list.getItems().addAll(Resolution.get_360p(),Resolution.get_480p(),Resolution.get_720p(),Resolution.get_1080p(),Resolution.get_custom());			
 			}
 			abitrate_slider.setValue(320);
+			Main.destination.resolution=null;
 		}
 		else {
 			System.out.println("the file is not a video");
@@ -243,21 +244,25 @@ public class SampleController implements Initializable{
 	//Methode pour lancer
 	public void ButtonLaunch(ActionEvent event) {		
 		List<String> errors=new ArrayList<String>();
-		if (text_directory.getText()==null) {
-			if (text_name.getText()==null) {
-				Main.destination.file_path+="."+Main.destination.extension.get_ext();
-			}else{
-				Main.destination.file_path=Main.destination.file_path.substring(0,Main.destination.file_path.lastIndexOf("\\"));
-				Main.destination.file_path+="\\"+text_name.getText()+"."+Main.destination.extension.get_ext();
-			}
-		} else if (text_name.getText()==null) {
-			errors.add("il faut spécifier un nom de fichier!");
-			
-		} else {
-			Main.destination.file_path=text_directory.getText()+"\\"+text_name.getText()+"."+Main.destination.extension.get_ext();
+		if (Main.destination.name==null || Main.destination.file_path==null) {
+			errors.add("- Pas de nom en sortie pour le fichier\n");
+		}
+		if(Main.destination.acodec==null) {
+			errors.add("- Pas de codec audio selectionné\n");
+		}
+		if(Main.destination.vcodec==null) {
+			errors.add("- Pas de codec vidéo selectionné\n");
+		}
+		if(Main.destination.extension==null) {
+			errors.add("- Aucune extension choisie\n");
+		}
+		if(Main.destination.resolution==null) {
+			errors.add("- Pas de resolution choisie\n");
 		}
 		if (errors.size()>0) {
 			error=true;
+		} else {
+			error=false;
 		}
 		
 		if(!error) {
@@ -269,8 +274,12 @@ public class SampleController implements Initializable{
 		else {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Erreur");
-			alert.setHeaderText("");
-			alert.setContentText("L'encodage n'a pas pu être lancé:");
+			alert.setHeaderText("L'encodage n'a pas pu être lancé");
+			String p_errors =new String();
+			for(String err : errors) {
+				p_errors+=err;
+			}
+			alert.setContentText(p_errors);
 			alert.showAndWait();
 		}
 	}
@@ -313,6 +322,7 @@ public class SampleController implements Initializable{
 	
 	// Ouverture de la fenetre de barre de progression 
 	  public void openProgressBarWindow() { 
+		  if (!error) {
 	    BorderPane secondaryLayout; 
 	    try { 
 	      secondaryLayout = FXMLLoader.load(getClass().getResource("ProgressBarWindow.fxml")); 
@@ -327,6 +337,7 @@ public class SampleController implements Initializable{
 	      // TODO Auto-generated catch block 
 	      e.printStackTrace(); 
 	    }
+	   }
 	  }
 	
 	//Methode pour choisir le(s) fichier(s) audio
