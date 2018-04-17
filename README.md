@@ -9,6 +9,7 @@ Développé dans le cadre du cours 8INF957 (Programmation Orientée Objet) de l'
 
 Une interface pour FFmpeg en JAVA.
 Un jar est disponible dans le dossier /jar
+
 Un manuel est disponible dans le dossier /manual
 ## Fonctionnalités :
 - Changement de codec/Conteneur
