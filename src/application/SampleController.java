@@ -269,6 +269,7 @@ public class SampleController implements Initializable{
 			if(Main.subListObs!=null && Main.subListObs.size()!=0) {
 				Main.storeSubs(Main.subListObs);
 			}
+			Main.destination.file_path +="\\" + Main.destination.name;
 			Main.buildFile(Main.destination.Generate_command(Main.source)); // cree le fichier command.bat
 		}
 		else {
@@ -373,13 +374,16 @@ public class SampleController implements Initializable{
 	}
 	
 	//Methode pour choisir le dossier de destination
-		public void ButtonBrowserDestination(ActionEvent event) {
+		public void ButtonBrowserDestination(ActionEvent event) { 
 			DirectoryChooser dc = new DirectoryChooser();								
 			File dir = dc.showDialog(null);
 			if(dir != null) {
 					text_directory.setText(dir.getAbsolutePath());
 					System.out.println(text_directory.getText());
-					Main.destination.file_path = text_directory.getText() + "\\" + Main.destination.name;
+					if(Main.destination.name!=null)
+						Main.destination.file_path = text_directory.getText();
+					else
+						Main.destination.file_path = text_directory.getText();
 			}
 			else {
 			}		
