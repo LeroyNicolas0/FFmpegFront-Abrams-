@@ -2,6 +2,7 @@ package application;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
@@ -240,7 +241,25 @@ public class SampleController implements Initializable{
 	}
 	
 	//Methode pour lancer
-	public void ButtonLaunch(ActionEvent event) {
+	public void ButtonLaunch(ActionEvent event) {		
+		List<String> errors=new ArrayList<String>();
+		if (text_directory.getText()!=null) {
+			if (text_name.getText()!=null) {
+				Main.destination.file_path+="."+Main.destination.extension.get_ext();
+			}else{
+				Main.destination.file_path=Main.destination.file_path.substring(0,Main.destination.file_path.lastIndexOf("\\"));
+				Main.destination.file_path+="\\"+text_name.getText()+"."+Main.destination.extension.get_ext();
+			}
+		} else if (text_name.getText()!=null) {
+			errors.add("il faut spécifier un nom de fichier!");
+			
+		} else {
+			Main.destination.file_path=text_directory.getText()+"\\"+text_name.getText()+"."+Main.destination.extension.get_ext();
+		}
+		if (errors.size()>0) {
+			error=true;
+		}
+		
 		if(!error) {
 			if(Main.subListObs!=null && Main.subListObs.size()!=0) {
 				Main.storeSubs(Main.subListObs);
@@ -251,7 +270,7 @@ public class SampleController implements Initializable{
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Erreur");
 			alert.setHeaderText("");
-			alert.setContentText("");
+			alert.setContentText("L'encodage n'a pas pu être lancé:");
 			alert.showAndWait();
 		}
 	}
@@ -693,7 +712,7 @@ public class SampleController implements Initializable{
 							resolution_w.setText(Integer.toString(value_w));
 							Matcher matcher2 = pattern.matcher(resolution_h.getText());
 							if (matcher2.find() && Main.destination!=null) {
-								int value_h=Integer.parseInt(matcher.group(0));
+								int value_h=Integer.parseInt(matcher2.group(0));
 								Main.destination.resolution=new Resolution(value_w,value_h);	
 								System.out.println(Main.destination.resolution.print());
 								}		
@@ -723,7 +742,7 @@ public class SampleController implements Initializable{
 								Matcher matcher2 = pattern.matcher(resolution_w.getText());
 								System.out.println(resolution_w.getText());
 								if (matcher2.find() && Main.destination!=null) {
-									int value_w=Integer.parseInt(matcher.group(0));
+									int value_w=Integer.parseInt(matcher2.group(0));
 									Main.destination.resolution=new Resolution(value_w,value_h);
 									System.out.println(Main.destination.resolution.print());
 									}		
