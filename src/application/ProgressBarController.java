@@ -22,16 +22,19 @@ public class ProgressBarController implements Initializable{
 	 private Button button_next;
 	 @FXML
 	 private Label value;
+	 private Thread thread;
+	 Task<Void> task;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		
 		progressBar.setProgress(0.0);
 		
 		 if(!Main.isEncoding) {
 			 //Main.isEncoding=true;
 			 value = new Label();
 			 value.setText("0");
-			 Task<Void> task = new Task<Void>(){
+			 task = new Task<Void>(){
 				 @Override
 				 protected Void call() throws Exception {
 					try {
@@ -51,6 +54,11 @@ public class ProgressBarController implements Initializable{
 							}
 						}
 						System.out.println("testitestu");
+						 
+						if(Thread.currentThread().isInterrupted()) {
+							System.out.println("interr");
+				            return null;
+				        }
 					}
 					catch (IOException e) {
 						System.out.println("bug");
@@ -67,7 +75,7 @@ public class ProgressBarController implements Initializable{
 				 }
 		 	};
 		 	
-		 	Thread thread = new Thread(task);
+		 	thread = new Thread(task);
 		 	thread.setDaemon(true);
 		 	thread.start();
 	 		progressBar.progressProperty().bind(task.progressProperty());
@@ -76,6 +84,20 @@ public class ProgressBarController implements Initializable{
 		}
 		else
 			System.out.println("Already encoding");
+		 
+		 progressBar.sceneProperty().addListener((obs, oldScene, newScene) -> {
+	        Platform.runLater(() -> {
+	            Stage stage = (Stage) newScene.getWindow();
+	            stage.setOnCloseRequest(e -> {
+	                System.out.println("plop");
+	                thread.interrupt();
+	                Thread.currentThread().interrupt();
+	                if(Thread.currentThread().isInterrupted()) {
+	                	System.out.println("yep");
+	                }
+	            });
+	        });
+	    });
 	 }
 	
 	public void buttonNext() {

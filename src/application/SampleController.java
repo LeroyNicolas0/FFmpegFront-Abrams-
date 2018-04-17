@@ -241,8 +241,7 @@ public class SampleController implements Initializable{
 	}
 	
 	//Methode pour lancer
-	public void ButtonLaunch(ActionEvent event) {
-		
+	public void ButtonLaunch(ActionEvent event) {		
 		List<String> errors=new ArrayList<String>();
 		if (text_directory.getText()==null) {
 			if (text_name.getText()==null) {
@@ -261,9 +260,12 @@ public class SampleController implements Initializable{
 			error=true;
 		}
 		
-		if(!error)
-			Main.buildFile(Main.destination.Generate_command(Main.source)); // cr�e le fichier command.bat
-		
+		if(!error) {
+			if(Main.subListObs!=null && Main.subListObs.size()!=0) {
+				Main.storeSubs(Main.subListObs);
+			}
+			Main.buildFile(Main.destination.Generate_command(Main.source)); // cree le fichier command.bat
+		}
 		else {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Erreur");
