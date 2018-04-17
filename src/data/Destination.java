@@ -1,6 +1,7 @@
 package data;
 
 import Enums.ACodec;
+import Enums.Extension;
 import Enums.VCodec;
 
 public class Destination extends Source {
@@ -34,15 +35,19 @@ public class Destination extends Source {
 			command +="-ss "+Float.toString(start_cut)+" ";
 		}
 		command+="-i \""+origin.file_path+"\" ";
-		for (AudioTrack a: this.pistes_audio){
-			input_n++;
-			if (!a.integrated) {
-				command+="-i \""+a.file+"\" ";
+		if (acodec!=ACodec.NONE) {
+			for (AudioTrack a: this.pistes_audio){
+				input_n++;
+				if (!a.integrated) {
+					command+="-i \""+a.file+"\" ";
+				}
 			}
 		}
-		for (SubtitleTrack s: this.st) {
-			if (!s.integrated) {
-				command+="-i \""+s.file+"\" ";
+		if (vcodec!=VCodec.NONE && extension!=Extension.AVI) {
+			for (SubtitleTrack s: this.st) {
+				if (!s.integrated) {
+					command+="-i \""+s.file+"\" ";
+				}
 			}
 		}
 		if (vcodec!=VCodec.NONE) {
@@ -62,7 +67,7 @@ public class Destination extends Source {
 		}else {
 			command+="-an ";
 		}
-		if (!this.st.isEmpty()) {
+		if (!this.st.isEmpty() && vcodec!=VCodec.NONE && extension!=Extension.AVI) {
 			command+="-scodec mov_text ";
 		}
 		for (int i=0; i<input_n;i++) {
