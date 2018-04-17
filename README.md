@@ -8,8 +8,8 @@
 Développé dans le cadre du cours 8INF957 (Programmation Orientée Objet) de l'UQAC.
 
 Une interface pour FFmpeg en JAVA.
-
-Un manuel est disponible dans le dossier manual
+Un jar est disponible dans le dossier /jar
+Un manuel est disponible dans le dossier /manual
 ## Fonctionnalités :
 - Changement de codec/Conteneur
 - Changement de résolution/bitrate
