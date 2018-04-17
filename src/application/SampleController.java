@@ -953,12 +953,12 @@ public class SampleController implements Initializable{
 				}
 			}
 		});
-
 		//Methode pour choix codec video
 		box_video.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
 			@Override
 		      public void changed(ObservableValue<? extends Number> observableValue, Number old_value, Number new_value) {
-				if (box_video.getValue()!=null && new_value.intValue()>-1) {
+				if (new_value.intValue()>-1) {
+					System.out.println("HI");
 		    	  String vid = (String) box_video.getItems().get((Integer) new_value);
 		    	  System.out.println(box_video.getItems().get((Integer) new_value));
 		    	  for(VCodec video : VCodec.values()) {
