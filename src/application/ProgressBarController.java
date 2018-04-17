@@ -23,7 +23,8 @@ public class ProgressBarController implements Initializable{
 	 @FXML
 	 private Label value;
 	 private Thread thread;
-	 Task<Void> task;
+	 private Process proc;
+	 private Task<Void> task;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -41,7 +42,7 @@ public class ProgressBarController implements Initializable{
 						float time = 0;
 						ProcessBuilder procBuilder = new ProcessBuilder(Main.pathTempDirectory + Main.fileCommand);
 						procBuilder.redirectErrorStream(true);
-						Process proc = procBuilder.start();
+						proc = procBuilder.start();
 						BufferedReader infoBuff = new BufferedReader(new InputStreamReader(proc.getInputStream()));
 						String lineToParse = null;
 						while ((lineToParse = infoBuff.readLine()) != null) {
@@ -89,12 +90,32 @@ public class ProgressBarController implements Initializable{
 	        Platform.runLater(() -> {
 	            Stage stage = (Stage) newScene.getWindow();
 	            stage.setOnCloseRequest(e -> {
-	                System.out.println("plop");
-	                thread.interrupt();
-	                Thread.currentThread().interrupt();
-	                if(Thread.currentThread().isInterrupted()) {
-	                	System.out.println("yep");
-	                }
+	            	
+	            	//On kill le process ffmpeg si on ferme la fenetre
+	            	final String getTasklist = "cmd /c tasklist";
+	        		final String killTask = "cmd /c taskkill /F /IM ";
+	        		Process process;
+
+	        		try {
+	        			//We get the list of the tasks runnning
+	        			process = Runtime.getRuntime().exec(getTasklist);
+	        			BufferedReader bufferReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+	        			String line;
+
+	        			//We look for ffmpeg.exe process and we ask the system to terminate it
+	        			while ((line = bufferReader.readLine()) != null){
+	        				if(line.contains("ffmpeg.exe")){
+	        					String command = killTask+"ffmpeg.exe";
+	        					Runtime.getRuntime().exec(command);
+	        					System.out.println("ffmpeg process killed without error.");
+	        				}
+	        			}
+	        			bufferReader.close();
+	        		} catch (IOException err) {
+	        			System.out.println("Error while killing ffmpeg process :");
+	        			System.out.println(err.getMessage());
+	        			err.printStackTrace();
+	        		}
 	            });
 	        });
 	    });
