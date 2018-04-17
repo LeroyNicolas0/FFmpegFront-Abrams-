@@ -244,14 +244,14 @@ public class SampleController implements Initializable{
 	public void ButtonLaunch(ActionEvent event) {
 		
 		List<String> errors=new ArrayList<String>();
-		if (text_directory.getText()!=null) {
-			if (text_name.getText()!=null) {
+		if (text_directory.getText()==null) {
+			if (text_name.getText()==null) {
 				Main.destination.file_path+="."+Main.destination.extension.get_ext();
 			}else{
 				Main.destination.file_path=Main.destination.file_path.substring(0,Main.destination.file_path.lastIndexOf("\\"));
 				Main.destination.file_path+="\\"+text_name.getText()+"."+Main.destination.extension.get_ext();
 			}
-		} else if (text_name.getText()!=null) {
+		} else if (text_name.getText()==null) {
 			errors.add("il faut spécifier un nom de fichier!");
 			
 		} else {
