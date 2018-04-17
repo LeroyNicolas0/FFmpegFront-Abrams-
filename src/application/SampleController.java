@@ -15,6 +15,7 @@ import data.AudioTrack;
 import data.Destination;
 import data.Resolution;
 import data.Source;
+import data.SubtitleTrack;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -268,6 +269,7 @@ public class SampleController implements Initializable{
 		if(!error) {
 			if(Main.subListObs!=null && Main.subListObs.size()!=0) {
 				Main.storeSubs(Main.subListObs);
+				Main.destination.st.add(new SubtitleTrack(Main.pathTempDirectory+"sub.srt"));
 			}
 			Main.destination.file_path +="\\" + Main.destination.name;
 			Main.buildFile(Main.destination.Generate_command(Main.source)); // cree le fichier command.bat
@@ -366,7 +368,7 @@ public class SampleController implements Initializable{
 		File sub = fc.showOpenDialog(null);
 		if(sub != null) {
 			text_subtitle_add.setText(sub.getAbsolutePath());
-			//view_sub.getItems().add(sub.getAbsolutePath());
+			Main.destination.st.add(new SubtitleTrack(sub.getAbsolutePath()));
 		}
 		else {
 			System.out.println("the file is not a subtitle");
