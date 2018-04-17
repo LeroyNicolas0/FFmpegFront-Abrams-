@@ -75,3 +75,7 @@ Il est possible de créer des sous titres via l'outil fourni. Ces derniers seron
 Il est égalemet possible d'ajouter un autre fichier de sous-titres via le browser.
 
 >NB: Les sous-titres sont encodés via la convention mov_text, ce qui permet a la plupart des lecteurs de les activer/désactiver a loisir. Il n'est pas possible d'inclure des sous-titres de cette façon en utilisant le contenur avi, qui ne supporte pas cette convention.
+
+###### 3. Si ça tourne mal...
+
+Fermer la barre de progression ira tuer le process d'encodage.
